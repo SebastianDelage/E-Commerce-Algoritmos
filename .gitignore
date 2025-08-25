@@ -1,0 +1,29 @@
+# Node.js / React
+node_modules/
+dist/
+.env
+.vite/
+*.log
+
+# .NET / C#
+bin/
+obj/
+*.user
+*.suo
+*.pdb
+*.cache
+*.dbmdl
+*.log
+
+# IDEs
+.vscode/
+.idea/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Otros
+.env.local
+.env.development
+.env.production
