@@ -1,0 +1,10 @@
+.icons{
+    transition: transform 0.3s ease;
+}
+.icons:hover{
+    cursor: pointer;
+}
+
+.bi{
+    font-size: 1.5rem;
+}
