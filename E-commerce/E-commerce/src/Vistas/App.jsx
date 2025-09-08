@@ -3,12 +3,16 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "../pages/Home.jsx";
 import ProductDetail from "../pages/ProductDetail.jsx";
 import Cart from "../pages/Cart.jsx";
-import Category from "../pages/Category.jsx"; // si vas a usar categorías dinámicas
+import CartSlide from "../Componentes/CartSlide.jsx";
+import Category from "../pages/Category.jsx";
 
 function App() {
+  const [showCart, setShowCart] = useState(false);
+
   return (
     <BrowserRouter>
-      <Navbar />
+      <Navbar onCartClick={() => setShowCart(true)} />
+
       <main className="container mt-4">
         <Routes>
           <Route path="/" element={<Home />} />

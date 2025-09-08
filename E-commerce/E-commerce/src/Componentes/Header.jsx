@@ -37,7 +37,7 @@ const Navbar = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Electrónica
+                Hombre
               </a>
               <ul className="dropdown-menu" aria-labelledby="categoria1">
                 <li><Link className="dropdown-item" to="/categoria/auriculares">Auriculares</Link></li>
@@ -56,7 +56,7 @@ const Navbar = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Ropa
+                Mujer
               </a>
               <ul className="dropdown-menu" aria-labelledby="categoria2">
                 <li><Link className="dropdown-item" to="/categoria/camperas">Camperas</Link></li>
@@ -75,7 +75,7 @@ const Navbar = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Hogar
+                Niños
               </a>
               <ul className="dropdown-menu" aria-labelledby="categoria3">
                 <li><Link className="dropdown-item" to="/categoria/decoracion">Decoración</Link></li>
