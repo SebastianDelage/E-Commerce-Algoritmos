@@ -1,45 +1,94 @@
 import "./Header.css";
+import { Link } from 'react-router-dom';
 
-const Header = () => {
+
+const Navbar = () => {
 
     return(
 
-        <div className="container py-2">
-            <div className="row align-items-center">
-                <div className="col-2">
-                <img src="" alt="Imagen" className="img-fluid" />
-                </div>
+        <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+      <div className="container-fluid">
+        <Link className="navbar-brand fw-bold text-primary" to="/">
+          E-Commerce
+        </Link>
 
-                <div className="col text-center">
-                    <h1 className="m-0 display-1">E-COMMERCE</h1>
-                </div>                
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
+          aria-controls="navbarContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-                <div className="col-2 d-flex justify-content-end gap-3">
-                    {/* COMO QUE ESTO ES UN COMENTARIO*/}
+        <div className="collapse navbar-collapse" id="navbarContent">
+          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
 
-                    {/* Parece una boludez pero despues dentro de cada div va a redirigirte a otra vista, por eso esta hecho asi */}
-                    <div className="ruta">
-                        <i className="bi bi-cart"/>
-                    </div>
-                    <div className="ruta">
-                        <i className="bi bi-heart-fill"/>
-                    </div>            
-                    <div className="ruta">
-                        <i className="bi bi-search"/>
-                    </div>                                        
-                </div>
-            </div>
+            {/* Categoría 1 */}
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="categoria1"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Electrónica
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="categoria1">
+                <li><Link className="dropdown-item" to="/categoria/auriculares">Auriculares</Link></li>
+                <li><Link className="dropdown-item" to="/categoria/monitores">Monitores</Link></li>
+                <li><Link className="dropdown-item" to="/categoria/teclados">Teclados</Link></li>
+              </ul>
+            </li>
 
-            {/* Fila inferior: menú */}
-            <div className="row mt-2">
-                <div className="col d-flex justify-content-around">
-                    <a href="#">Hombres</a>
-                    <a href="#">Mujeres</a>
-                    <a href="#">Promociones</a>
-                    <a href="#">Carrito</a>
-                </div>
-            </div>
-            </div>
+            {/* Categoría 2 */}
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="categoria2"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Ropa
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="categoria2">
+                <li><Link className="dropdown-item" to="/categoria/camperas">Camperas</Link></li>
+                <li><Link className="dropdown-item" to="/categoria/zapatillas">Zapatillas</Link></li>
+                <li><Link className="dropdown-item" to="/categoria/remeras">Remeras</Link></li>
+              </ul>
+            </li>
+
+            {/* Categoría 3 */}
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="categoria3"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Hogar
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="categoria3">
+                <li><Link className="dropdown-item" to="/categoria/decoracion">Decoración</Link></li>
+                <li><Link className="dropdown-item" to="/categoria/iluminacion">Iluminación</Link></li>
+                <li><Link className="dropdown-item" to="/categoria/muebles">Muebles</Link></li>
+              </ul>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
     );
 }
 
