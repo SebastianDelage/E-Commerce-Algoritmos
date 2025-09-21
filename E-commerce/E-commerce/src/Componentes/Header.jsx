@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Header.css";
 
 const Header = () => {
@@ -33,13 +34,13 @@ const Header = () => {
             {/* Fila inferior: menú */}
             <div className="row mt-2">
                 <div className="col d-flex justify-content-around">
-                    <a href="#">Hombres</a>
-                    <a href="#">Mujeres</a>
-                    <a href="#">Promociones</a>
-                    <a href="#">Carrito</a>
+                    <Link to="/hombres">Hombres</Link>
+                    <Link to="/mujeres">Mujeres</Link>
+                    <Link to="/promociones">Promociones</Link>
                 </div>
             </div>
-            </div>
+        </div>
+            
     );
 }
 
