@@ -1,37 +1,34 @@
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.png";
 import "./Header.css";
 
 const Header = () => {
-
-    return(
-
+    return (
         <div className="container py-2">
             <div className="row align-items-center">
-                <div className="col-2">
-                <img src="" alt="Imagen" className="img-fluid" />
+                {/* IZQUIERDA: búsqueda */}
+                <div className="col-4 d-flex justify-content-start">
+                    <i className="bi bi-search fs-4 me-3" />
+                    {/* Si querés agregar un input de búsqueda: */}
+                    {/* <input type="text" placeholder="Buscar..." className="form-control w-50" /> */}
                 </div>
 
-                <div className="col text-center">
-                    <h1 className="m-0 display-1">E-COMMERCE</h1>
-                </div>                
+                {/* CENTRO: logo */}
+                <div className="col-4 text-center">
+                    <Link to="/">
+                        <img src={logo} alt="Logo E-Commerce" className="img-fluid logo" />
+                    </Link>
+                </div>
 
-                <div className="col-2 d-flex justify-content-end gap-3">
-                    {/* COMO QUE ESTO ES UN COMENTARIO*/}
-
-                    {/* Parece una boludez pero despues dentro de cada div va a redirigirte a otra vista, por eso esta hecho asi */}
-                    <div className="ruta">
-                        <i className="bi bi-cart"/>
-                    </div>
-                    <div className="ruta">
-                        <i className="bi bi-heart-fill"/>
-                    </div>            
-                    <div className="ruta">
-                        <i className="bi bi-search"/>
-                    </div>                                        
+                {/* DERECHA: carrito, favoritos, login */}
+                <div className="col-4 d-flex justify-content-end gap-3">
+                    <i className="bi bi-cart fs-4" />
+                    <i className="bi bi-heart-fill fs-4" />
+                    <i className="bi bi-person-circle fs-4" />
                 </div>
             </div>
 
-            {/* Fila inferior: menú */}
+            {/* Menú inferior */}
             <div className="row mt-2">
                 <div className="col d-flex justify-content-around">
                     <Link to="/hombres">Hombres</Link>
@@ -40,8 +37,7 @@ const Header = () => {
                 </div>
             </div>
         </div>
-            
     );
-}
+};
 
 export default Header;
