@@ -1,0 +1,26 @@
+/* ProductItem.css */
+.product-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .image-placeholder {
+    width: 80px;
+    height: 80px;
+    background-color: #ddd;
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: #555;
+  }
+  
+  .product-details h3 {
+    margin: 0;
+  }
+  
+  .product-details p {
+    margin: 0.2rem 0 0;
+  }
