@@ -23,7 +23,10 @@ const Header = () => {
                 {/* DERECHA: carrito, favoritos, login */}
                 <div className="col-4 d-flex justify-content-end gap-3">
                     <i className="bi bi-cart fs-4" />
-                    <i className="bi bi-heart-fill fs-4" />
+                    <Link to="/favoritos">
+                        <i className="bi bi-heart fs-4" />
+                    </Link>
+    
                     <i className="bi bi-person-circle fs-4" />
                 </div>
             </div>
