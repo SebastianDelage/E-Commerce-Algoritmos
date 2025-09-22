@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { FaTimes } from "react-icons/fa";
 
-export default function CartSidebar({ show, onClose }) {
+export default function CartSlide({ show, onClose }) {
   const { carrito, removeFromCart } = useContext(CartContext);
 
   return (

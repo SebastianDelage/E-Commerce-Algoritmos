@@ -1,0 +1,25 @@
+/* CartSidebar.css */
+.cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: -50%;
+    width: 50%;
+    height: 100%;
+    background-color: #f9f9f9;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+    transition: right 0.3s ease-in-out;
+    padding: 1rem;
+    z-index: 1000;
+  }
+  
+  .cart-sidebar.open {
+    right: 0;
+  }
+  
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    float: right;
+    cursor: pointer;
+  }
