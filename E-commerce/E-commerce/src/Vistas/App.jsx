@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "../Componentes/Header.jsx";
-
+import Favoritos from "../Vistas/Favoritos";
 
 import Home from "./Home.jsx";
 import Hombres from "./Hombres.jsx";
@@ -16,6 +16,7 @@ function App() {
         <Route path="/hombres" element={<Hombres />} />
         <Route path="/mujeres" element={<Mujeres />} />
         <Route path="/promociones" element={<Promociones />} />
+        <Route path="/favoritos" element={<Favoritos />} />
       </Routes>
     </Router>
   );
