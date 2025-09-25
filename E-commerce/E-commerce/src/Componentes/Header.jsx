@@ -53,10 +53,10 @@ const Header = () => {
 
       {/* Menú inferior */}
       <div className="row mt-2">
-        <div className="col d-flex justify-content-around">
-          <p className="p-hombre"><Link to="/hombres">Hombres</Link></p>
-          <Link to="/mujeres" className="p-mujer">Mujeres</Link>
-          <Link to="/promociones" className="p-promo">Promociones</Link>
+        <div className="col d-flex justify-content-around menu">
+          <Link to="/hombres">Hombres</Link>
+          <Link to="/mujeres">Mujeres</Link>
+          <Link to="/promociones">Promociones</Link>
         </div>
       </div>
 
