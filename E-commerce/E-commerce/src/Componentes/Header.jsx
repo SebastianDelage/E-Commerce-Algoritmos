@@ -2,17 +2,18 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 import "../assets/styles/Header.css";
+import CartSlide from "../Componentes/CartSlide";
 
 const Header = () => {
   const [showCart, setShowCart] = useState(false);
 
   const handleCartClick = () => {
-    console.log("Carrito abierto");
+    console.log("Carrito abierto, showCart:",true);
     setShowCart(true);
   };
 
   const handleCloseCart = () => {
-    console.log("Carrito cerrado");
+    console.log("Carrito cerrado, showCart:",false);
     setShowCart(false);
   };
 
@@ -50,14 +51,14 @@ const Header = () => {
       {/* Menú inferior */}
       <div className="row mt-2">
         <div className="col d-flex justify-content-around">
-          <Link to="/hombres">Hombres</Link>
-          <Link to="/mujeres">Mujeres</Link>
-          <Link to="/promociones">Promociones</Link>
+          <p className="p-hombre"><Link to="/hombres">Hombres</Link></p>
+          <Link to="/mujeres" className="p-mujer">Mujeres</Link>
+          <Link to="/promociones" className="p-promo">Promociones</Link>
         </div>
       </div>
 
       {/* Sidebar del carrito */}
-      <CartSlide show={showCart} onClose={handleCloseCart} />
+      <CartSlide show={showCart} onClose={handleCloseCart} />      
     </div>
   );
 };

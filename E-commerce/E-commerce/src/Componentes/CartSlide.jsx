@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { FaTimes } from "react-icons/fa";
+import "../assets/styles/CartSlide.css";
 
 export default function CartSlide({ show, onClose }) {
   const { carrito, removeFromCart } = useContext(CartContext);
