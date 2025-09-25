@@ -13,8 +13,8 @@ body{
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   position:relative;
   margin:20px auto;
-  max-width: 600px;
-  max-height: 800px;
+  max-width: 400px;
+  max-height: 700px;
 }
 .wsk-cp-img{
   position:absolute;
