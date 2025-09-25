@@ -37,14 +37,17 @@ const Header = () => {
         <div className="col-4 d-flex justify-content-end gap-3">
           {/* Botón del carrito */}
           <button className="btn btn-link p-0" onClick={handleCartClick}>
-            <i className="bi bi-cart fs-4" />
+            <i className="carrito bi bi-cart fs-4" />
           </button>
 
           <Link to="/favoritos">
-            <i className="bi bi-heart fs-4" />
+            <i className="favorito bi bi-heart fs-4" />
           </Link>
 
-          <i className="bi bi-person-circle fs-4" />
+          <Link to="/perfil">
+            <i className="perfil bi bi-person-circle fs-4" />
+          </Link>
+                    
         </div>
       </div>
 

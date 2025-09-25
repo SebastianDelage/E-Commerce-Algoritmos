@@ -1,13 +1,45 @@
-.icons{
-    transition: transform 0.3s ease;
-}
-.icons:hover{
-    cursor: pointer;
+/* Header.css */
+
+/* Estilo general del logo */
+.logo {
+    max-height: 60px;
 }
 
-.bi{
-    font-size: 1.5rem;
+/* Íconos del header (carrito, favoritos, usuario) */
+.icons {
+    cursor: pointer;
+    transition: color 0.3s ease;
 }
-.logo {
-  max-height: 80px;
+
+.buscar:hover
+{
+    color: #ff9153;
+}
+.carrito:hover
+{
+    color: #ff9153;
+}
+.favorito{
+    color: #000000;
+}
+.favorito:hover{
+    color: #ff9153;
+}
+.perfil{
+    color: #000000;
+}
+.perfil:hover{
+    color: #ff9153;
+}
+
+/* Menú inferior de navegación */
+.menu a{
+    text-decoration: none;
+    color: #000000;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.menu a:hover {
+    color: #ff9153;
 }
