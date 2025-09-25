@@ -1,0 +1,16 @@
+/* Navbar.css */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: #222;
+    color: white;
+  }
+  
+  .cart-button {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+  }

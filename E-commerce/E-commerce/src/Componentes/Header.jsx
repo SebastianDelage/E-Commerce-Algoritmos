@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
-import "./Header.css";
-import CartSlide from "../Componentes/CartSlide";
+import "../assets/styles/Header.css";
 
 const Header = () => {
   const [showCart, setShowCart] = useState(false);
