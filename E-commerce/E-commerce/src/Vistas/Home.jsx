@@ -8,7 +8,8 @@ export default function Home() {
             <div className="col-md-12">
               <div class="wsk-cp-product">
                 <div class="wsk-cp-img">
-                  <img src="https://3.bp.blogspot.com/-eDeTttUjHxI/WVSvmI-552I/AAAAAAAAAKw/0T3LN6jABKMyEkTRUUQMFxpe6PLvtcMMwCPcBGAYYCw/s1600/001-culture-clash-matthew-gianoulis.jpg" alt="Product" class="img-responsive" />
+                  <img src="../assets/Imagenes/Hombre/top/remeranegra.jpg" alt="Product" class="img-responsive" />
+                  
                 </div>
                 <div class="wsk-cp-text">
                   <div class="category">
