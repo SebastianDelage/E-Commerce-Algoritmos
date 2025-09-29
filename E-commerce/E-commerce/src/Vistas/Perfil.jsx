@@ -3,8 +3,11 @@ import React from "react";
 const Perfil = () => {
     return (
         <div className="container mt-4">
-            <h2>Perfil</h2>
-            <p>Aquí aparecerá tu perfil</p>
+            <div className="row-md-12">
+                <div className="col-md-12 text-center">
+                    <h1 className="display-1">Perfil</h1>
+                </div>
+            </div>
         </div>
     );
 };
