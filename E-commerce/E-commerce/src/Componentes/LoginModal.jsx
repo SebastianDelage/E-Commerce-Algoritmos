@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/styles/LoginModal.css";
-import pantalonCargo from "../assets/Imagenes/Hombre/bottom/pantalonCargoMadera.jpg";
+import HypeConColor from "../assets/Imagenes/Logo/HypeConColor.png";
 
 const LoginModal = ({ onClose, onLoginSuccess }) => {
   const [email, setEmail] = useState("");
@@ -24,7 +24,7 @@ const LoginModal = ({ onClose, onLoginSuccess }) => {
       <div className="login-modal d-flex">
         {/* Imagen a la izquierda */}
         <div className="modal-image">
-          <img src={pantalonCargo} alt="Inicio Sesión" />
+          <img src={HypeConColor} alt="Inicio Sesión" />
         </div>
 
         {/* Barra separadora */}
