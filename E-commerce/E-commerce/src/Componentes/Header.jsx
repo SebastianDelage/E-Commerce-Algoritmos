@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
+import logo from "../assets/Imagenes/Logo/logo.png";
 import "../assets/styles/Header.css";
 import CartSlide from "../Componentes/CartSlide";
 import LoginModal from "../Componentes/LoginModal";
