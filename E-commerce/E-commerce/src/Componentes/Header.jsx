@@ -48,14 +48,25 @@ const Header = () => {
     navigate("/perfil");
   };
 
+  const [showSearch, setShowSearch] = useState(false);
+
+  const handleSearchClick = () => {
+    setShowSearch(!showSearch);
+  };
+
+
   return (
     <div className="container py-2">
       <div className="row align-items-center">
         {/* IZQUIERDA: búsqueda */}
-        <div className="col-4 d-flex justify-content-start">
-          <i className="bi bi-search fs-4 me-3" />
-          {/* <input type="text" placeholder="Buscar..." className="form-control w-50" /> */}
-        </div>
+
+        <div className="col-4 d-flex align-items-center position-relative">
+        <i className="bi bi-search fs-4 me-3 buscar cursor-pointer" onClick={handleSearchClick} />
+        <input
+          type="text" placeholder="Buscar..." 
+          className={`form-control search-input ${showSearch ? "expand" : ""}`}
+        />
+      </div>
 
         {/* CENTRO: logo */}
         <div className="col-4 text-center">
