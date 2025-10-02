@@ -1,0 +1,89 @@
+/* Fondo del modal */
+.login-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+  }
+  
+  /* Contenedor del modal, flex para imagen y formulario */
+  .login-modal {
+    background: white;
+    border-radius: 8px;
+    width: 600px;
+    max-width: 90%;
+    display: flex;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Imagen a la izquierda */
+  .modal-image img {
+    width: 250px;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  /* Barra separadora sin margen */
+  .modal-divider {
+    width: 1px;
+    background-color: #ddd;
+  }
+  
+  /* Formulario */
+  .modal-form {
+    flex: 1;
+    padding: 20px 30px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  /* Botón cerrar */
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  /* Título más pequeño */
+  .modal-form h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Inputs apilados */
+  .modal-form input {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+  
+  /* Botón apilado */
+  .modal-form button {
+    padding: 10px;
+    background-color: lightgray;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+  }

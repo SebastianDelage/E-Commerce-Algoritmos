@@ -6,24 +6,24 @@ export default function Home() {
         <div className="row-md-12">
             <h1 className="display-1 mb-3 sideAnimFade">Página de Inicio</h1>
             <div className="col-md-12">
-              <div class="wsk-cp-product">
-                <div class="wsk-cp-img">
-                  <img src="../assets/Imagenes/Hombre/top/remeranegra.jpg" alt="Product" class="img-responsive" />
+              <div className="wsk-cp-product">
+                <div className="wsk-cp-img">
+                  <img src="../assets/Imagenes/Hombre/top/remeranegra.jpg" alt="Product" className="img-responsive" />
                   
                 </div>
-                <div class="wsk-cp-text">
-                  <div class="category">
+                <div className="wsk-cp-text">
+                  <div className="category">
                     <span>T-Shirt</span>
                   </div>
-                  <div class="title-product">
+                  <div className="title-product">
                     <h3>Remera Algodon BoxyFit Hype </h3>
                   </div>
-                  <div class="description-prod">
+                  <div className="description-prod">
                     <p>Remerita</p>
                   </div>
-                  <div class="card-footer">
-                    <div class="wcf-left"><span class="price">$ 150.000</span></div>
-                    <div class="wcf-right"><a href="#" class="buy-btn"><i class="zmdi zmdi-shopping-basket"></i></a></div>
+                  <div className="card-footer">
+                    <div className="wcf-left"><span className="price">$ 150.000</span></div>
+                    <div className="wcf-right"><a href="#" className="buy-btn"><i className="zmdi zmdi-shopping-basket"></i></a></div>
                   </div>
                 </div>
               </div>
