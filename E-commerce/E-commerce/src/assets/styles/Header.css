@@ -8,6 +8,10 @@
     cursor: pointer;
     transition: color 0.3s ease;
 }
+.menu {
+    border-top: 1px solid #000; /* Línea divisoria de 2px, color negro */
+    padding-top: 10px; /* Espacio opcional después de la línea */
+}
 
 .buscar:hover
 {
@@ -27,6 +31,12 @@
     color: #000000;
 }
 .perfil:hover{
+    color: #ff9153;
+}
+.carrito{
+    color: #000000;
+}
+.carrito:hover{
     color: #ff9153;
 }
 
