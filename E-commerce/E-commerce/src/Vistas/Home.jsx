@@ -1,4 +1,5 @@
 import "../assets/styles/Home.css";
+import Integracion from "./Integracion";
 
 export default function Home() {
     return (
@@ -29,6 +30,7 @@ export default function Home() {
               </div>
             </div>
         </div>
+        <Integracion />
       </div>      
     );
   }
