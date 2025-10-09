@@ -51,3 +51,13 @@ export default function Home() {
     </div>
   );
 }
+
+  return (
+    <div className="container">
+      <div className="row-md-12">
+        <h1 className="display-1 mb-3 sideAnimFade">Página de Inicio</h1>
+        <Integracion />
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,109 @@
+.carousel {
+    position: relative;
+    max-width: 100%; /* Adjust as needed */
+    margin: 0 auto;
+    padding: 20px;
+    overflow: hidden;
+    max-height: 320px;
+  }
+  
+  .carousel-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+
+  .carousel-image {
+    width: 100%;
+    height: 400px; /* Adjust height as needed */
+    object-fit: cover; /* Ensures images scale nicely */
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  
+  .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(82, 81, 81, 0.5);
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    z-index: 1; /* Ensure arrows are above carousel content */
+  }
+  
+  .carousel-arrow.left {
+    left: 20px; /* Adjust based on padding */
+  }
+  
+  .carousel-arrow.right {
+    right: 20px; /* Adjust based on padding */
+  }
+  
+  .carousel-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .indicator {
+    width: 12px;
+    height: 12px;
+    margin: 0 5px;
+    background: #ccc;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .indicator.active {
+    background: #007bff; /* Primary color, adjust as needed */
+  }
+  
+  .indicator:hover {
+    background: #0056b3;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .carousel {
+      padding: 10px;
+    }
+  
+    .carousel-image {
+      height: 300px; /* Smaller height for smaller screens */
+    }
+  
+    .carousel-title {
+      font-size: 1.2rem;
+      padding: 10px;
+    }
+  
+    .carousel-arrow {
+      width: 30px;
+      height: 30px;
+      font-size: 1.2rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .carousel-image {
+      height: 200px;
+    }
+  
+    .carousel-title {
+      font-size: 1rem;
+    }
+  }
