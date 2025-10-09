@@ -1,37 +1,50 @@
+// src/Paginas/Home.jsx
+import { useState, useEffect } from 'react';
 import "../assets/styles/Home.css";
-import Integracion from "./Integracion";
+import ProductCard from "../Componentes/ProductCard";
 
 export default function Home() {
-    return (
-      <div className="container">
-        <div className="row-md-12">
-            <h1 className="display-1 mb-3 sideAnimFade">Página de Inicio</h1>
-            <div className="col-md-12">
-              <div className="wsk-cp-product">
-                <div className="wsk-cp-img">
-                  <img src="../assets/Imagenes/Hombre/top/remeranegra.jpg" alt="Product" className="img-responsive" />
-                  
-                </div>
-                <div className="wsk-cp-text">
-                  <div className="category">
-                    <span>T-Shirt</span>
-                  </div>
-                  <div className="title-product">
-                    <h3>Remera Algodon BoxyFit Hype </h3>
-                  </div>
-                  <div className="description-prod">
-                    <p>Remerita</p>
-                  </div>
-                  <div className="card-footer">
-                    <div className="wcf-left"><span className="price">$ 150.000</span></div>
-                    <div className="wcf-right"><a href="#" className="buy-btn"><i className="zmdi zmdi-shopping-basket"></i></a></div>
-                  </div>
-                </div>
-              </div>
+  const [productos, setProductos] = useState([]);
+  const [cargando, setCargando] = useState(true);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await fetch("http://localhost:5079/Producto/GetAll", {
+          method: "GET",
+          mode: "cors"
+        });
+        const data = await response.json();
+        if (Array.isArray(data.data)) {
+          setProductos(data.data);
+        } else {
+          console.warn("La respuesta no contiene un array:", data);
+        }
+      } catch (error) {
+        console.error("Error al obtener productos:", error);
+      } finally {
+        setCargando(false);
+      }
+    };
+
+    getData();
+  }, []);
+
+  return (
+    <div className="container">
+      <h1 className="display-1 mb-3 sideAnimFade">Página de Inicio</h1>
+
+      {cargando ? (
+        <p>Cargando productos...</p>
+      ) : (
+        <div className="row">
+          {productos.map((producto) => (
+            <div className="col-md-4" key={producto.producto_id}>
+              <ProductCard producto={producto} />
             </div>
+          ))}
         </div>
-        <Integracion />
-      </div>      
-    );
-  }
-  
+      )}
+    </div>
+  );
+}
