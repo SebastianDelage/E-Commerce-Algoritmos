@@ -1,4 +1,11 @@
+import React from 'react';
+import Cartel from "../Componentes/Cartel";
+
 export default function Promociones() {
-    return <h1>Página de Promociones</h1>;
-  }
+  return (
+    <div>
+      <Cartel />
+    </div>
+  );
+}
   
