@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import "../assets/styles/Home.css";
 import ProductCard from "../Componentes/ProductCard";
+import Cartel from "../Componentes/Cartel";
 
 
 export default function Home() {
@@ -34,7 +35,7 @@ export default function Home() {
   return (
     <div className="container">
       <div className="row">
-        
+        <Cartel></Cartel>
       </div>
 
       {cargando ? (
@@ -48,16 +49,6 @@ export default function Home() {
           ))}
         </div>
       )}
-    </div>
-  );
-}
-
-  return (
-    <div className="container">
-      <div className="row-md-12">
-        <h1 className="display-1 mb-3 sideAnimFade">Página de Inicio</h1>
-        <Integracion />
-      </div>
     </div>
   );
 }
