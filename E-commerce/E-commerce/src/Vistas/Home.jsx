@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import "../assets/styles/Home.css";
 import ProductCard from "../Componentes/ProductCard";
 
+
 export default function Home() {
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -32,7 +33,9 @@ export default function Home() {
 
   return (
     <div className="container">
-      <h1 className="display-1 mb-3 sideAnimFade">Página de Inicio</h1>
+      <div className="row">
+        
+      </div>
 
       {cargando ? (
         <p>Cargando productos...</p>
