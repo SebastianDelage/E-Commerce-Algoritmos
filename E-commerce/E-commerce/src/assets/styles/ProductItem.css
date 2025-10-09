@@ -60,11 +60,19 @@
   font-size: xx-large;
 }
 
-.producCardAddCol{
+.productCardAddCol{
   margin-top: 20px;
   min-width: 100px;
   max-width: 300px;
   min-height: 400px;
   max-height: 600px;
-  
+  text-align: center;
+}
+
+.productCard-subtitle{
+  background-color: rgb(96, 130, 182);
+}
+
+.productCard-subtitle-circle{
+  background-color: rgb(10, 130, 182);
 }
