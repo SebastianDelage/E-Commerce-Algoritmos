@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FaTools } from "react-icons/fa";
+
 import logo from "../assets/Imagenes/Logo/logo.png";
 import "../assets/styles/Header.css";
 import CartSlide from "../Componentes/CartSlide";
 import LoginModal from "../Componentes/LoginModal";
 
 const Header = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
   const [showCart, setShowCart] = useState(false);
 
   //Constantes para redireccion y verificacion de usuario logueado
@@ -77,6 +80,13 @@ const Header = () => {
 
         {/* DERECHA: carrito, favoritos, login */}
         <div className="col-4 d-flex justify-content-end gap-3">
+
+        {user?.role === "admin" && (
+          <button className="btn btn-link p-0" onClick={() => navigate("/back")}>
+            <i className="admin bi bi-tools fs-4" title="Panel Admin" />
+          </button>
+        )}
+
           {/* Botón del carrito */}
           <button className="btn btn-link p-0" onClick={handleCartClick}>
             <i className="carrito bi bi-cart fs-4" />

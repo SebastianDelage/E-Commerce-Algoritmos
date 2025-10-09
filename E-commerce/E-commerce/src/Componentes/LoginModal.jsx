@@ -13,7 +13,9 @@ const LoginModal = ({ onClose, onLoginSuccess }) => {
 
     // Simulación de login con credenciales fijas
     if (email === "abc@abc.com" && password === "1234") {
-      onLoginSuccess({ email }); // Notifica al Header que el login fue exitoso
+      const user = { email, role: "admin" };
+      localStorage.setItem("user", JSON.stringify(user));
+      onLoginSuccess(user); // Notifica al Header que el login fue exitoso
     } else {
       setError("Credenciales inválidas");
     }
