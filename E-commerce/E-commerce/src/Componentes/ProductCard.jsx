@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 export default function ProductCard({ producto }) {
 
-  console.log(producto);
   return (
     <div className="card h-100 m-2">
       <img src={producto.imagenUrl} className="card-img-top" alt={producto.nombre} />
