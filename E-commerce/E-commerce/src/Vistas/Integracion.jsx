@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
-
+import ProductCard from "../Componentes/ProductCard.jsx";
+ 
 
 const getData = async () => {
     let rsp = await fetch("http://localhost:5079/Producto/GetAll", {
@@ -11,8 +12,8 @@ const getData = async () => {
         body:JSON.stringify({})
         */
     })
-    .then(res => res.json())
-    .then(res => res)
+    .then(rsp => rsp.json())
+    .then(rsp => rsp)
     .catch(err => console.log(err));
 
     return rsp;
@@ -28,7 +29,6 @@ const Integracion = (props) => {
             const func = async () => {
                 let res = await getData();
 
-                console.log(res);
                 
                 if(typeof(res) == typeof({}))
                 {
@@ -43,10 +43,7 @@ const Integracion = (props) => {
         {
             data?.data?.map((el) => {
                 return(
-                <Fragment key={el.producto_id}>
-                    <p>{el.nombre}</p>
-                    <br />
-                </Fragment>)
+                <ProductCard producto={el} key={el.producto_id}/>)
             })
 
         }
