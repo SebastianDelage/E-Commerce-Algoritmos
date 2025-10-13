@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaTools } from "react-icons/fa";
 
-import logo from "../assets/Imagenes/Logo/logo.png";
+import logo from "../../public/Imagenes/Logo/logo.png";
 import "../assets/styles/Header.css";
 import CartSlide from "../Componentes/CartSlide";
 import LoginModal from "../Componentes/LoginModal";

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/styles/LoginModal.css";
-import HypeConColor from "../assets/Imagenes/Logo/HypeConColor.png";
+import HypeConColor from "../../public/Imagenes/Logo/HypeConColor.png";
 
 const LoginModal = ({ onClose, onLoginSuccess }) => {
   const [email, setEmail] = useState("");

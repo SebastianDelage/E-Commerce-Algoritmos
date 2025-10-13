@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import img1 from "../assets/Imagenes/Logo/logo.png";
-import img2 from "../assets/Imagenes/Logo/HypeConColor.png";
-import img3 from "../assets/Imagenes/Logo/Banner horizontal nueva colección minimalista y tipográfico beige.png";
+import img1 from "../../public/Imagenes/Logo/logo.png";
+import img2 from "../../public/Imagenes/Logo/HypeConColor.png";
+import img3 from "../../public/Imagenes/Logo/Banner.png";
 import '../assets/styles/Cartel.css';
 
 const images = [
-  { src: img1, alt: 'Image 1', title: 'Product 1' },
-  { src: img2, alt: 'Image 2', title: 'Product 2' },
-  { src: img3, alt: 'Image 3', title: 'Product 3' },
+  { src: img1, alt: 'Image 1'  },
+  { src: img2, alt: 'Image 2'},
+  { src: img3, alt: 'Image 3'},
 ];
 
 const Cartel = () => {
