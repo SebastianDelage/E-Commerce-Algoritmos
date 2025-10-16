@@ -60,7 +60,7 @@ const Cartel = () => {
         className="carousel-arrow left"
         aria-label="Previous image"
       >
-        ←
+         ‹
       </button>
       <div className="carousel-card">
         <img
@@ -75,7 +75,7 @@ const Cartel = () => {
         className="carousel-arrow right"
         aria-label="Next image"
       >
-        →
+         ›
       </button>
       <div className="carousel-indicators">
         {images.map((_, index) => (
