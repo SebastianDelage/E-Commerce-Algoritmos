@@ -8,6 +8,7 @@ import Cartel from "../Componentes/Cartel";
 export default function Home() {
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
+  const [user, setUser] = useState({perfil_id:1});
 
   useEffect(() => {
     const getData = async () => {
@@ -43,8 +44,8 @@ export default function Home() {
       ) : (
         <div className="row">
           {productos.map((producto) => (
-            <div className="col-md-4" key={producto.producto_id}>
-              <ProductCard producto={producto} />
+            <div className="col-md-4 mb-3" key={producto.producto_id}>
+              <ProductCard producto={producto} usuario={user} />
             </div>
           ))}
         </div>

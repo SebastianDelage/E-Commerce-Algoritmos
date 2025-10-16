@@ -5,6 +5,8 @@ export default function Promociones() {
   return (
     <div>
       <Cartel />
+      {}
+
     </div>
   );
 }
