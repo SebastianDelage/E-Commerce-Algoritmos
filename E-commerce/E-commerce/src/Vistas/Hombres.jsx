@@ -40,7 +40,7 @@ export default function Hombres() {
           ) : (
             <div className="row">
               {productos.map((producto) => (
-                <div className="col-md-4" key={producto.producto_id}>
+                <div className="col-md-4 mb-3" key={producto.producto_id}>
                   <ProductCard producto={producto} />
                 </div>
               ))}
