@@ -8,6 +8,7 @@ import Cartel from "../Componentes/Cartel";
 export default function Home() {
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -32,23 +33,48 @@ export default function Home() {
     getData();
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+
   return (
-    <div className="container">
-      <div className="row">
-        <Cartel></Cartel>
-      </div>
+
+      <div className="container px-0" style={{ maxWidth: '1100px', margin: '0 auto' }}>
+        <Cartel />
+
 
       {cargando ? (
         <p>Cargando productos...</p>
       ) : (
         <div className="row">
           {productos.map((producto) => (
-            <div className="col-md-4" key={producto.producto_id}>
+            <div className="col-md-4 mb-3" key={producto.producto_id}>
               <ProductCard producto={producto} />
             </div>
           ))}
         </div>
       )}
-    </div>
-  );
-}
+      
+      {showScrollTop && (
+            <button
+              onClick={scrollToTop}
+              className="scroll-top-btn"
+              aria-label="Volver al inicio"
+            >
+              <i className="bi bi-arrow-up-circle-fill fs-3"></i>
+            </button>
+          )}
+        </div>
+      );
+  }
+  
