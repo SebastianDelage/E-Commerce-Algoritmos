@@ -25,92 +25,84 @@
     transition: opacity 0.5s ease-in-out;
   }
 
+  
   .carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: #ff5fa2; /* rosa por defecto */
-  color: #ffffff; /* flechas blancas */
-  border: none;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 2rem;
-  cursor: pointer;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease;
-}
-
-.carousel-arrow:hover {
-  transform: translateY(-50%) scale(1.05);
-}
-
-
-.carousel-arrow:active {
-  background-color: #ff9153;
-  color: #000000;
-  transform: translateY(-50%) scale(0.95);
-}
-
-
-.carousel-arrow.left {
-  left: 20px;
-}
-
-.carousel-arrow.right {
-  right: 20px;
-}
-
-.carousel-arrow i {
-  font-size: 1.8rem;
-  line-height: 1;
-  vertical-align: middle;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.carousel-arrow.left i {
-  transform: translateX(-2px); 
-}
-
-.carousel-arrow.right i {
-  transform: translateX(2px); 
-}
-
-
-.carousel-indicators {
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
-  gap: 8px;
-}
-
-.indicator {
-  width: 14px;
-  height: 14px;
-  background: rgba(255, 145, 83, 0.4); /* naranja suave */
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-.indicator.active {
-  background: #ff5fa2; /* rosa vibrante para el activo */
-  transform: scale(1.2);
-}
-
-.indicator:hover {
-  background: rgba(255, 145, 83, 0.6); /* naranja más intenso */
-}
-
-@media (max-width: 480px) {
-  .indicator {
-    width: 10px;
-    height: 10px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(82, 81, 81, 0.5);
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    z-index: 1; /* Ensure arrows are above carousel content */
   }
-}
+  
+  .carousel-arrow.left {
+    left: 20px; /* Adjust based on padding */
+  }
+  
+  .carousel-arrow.right {
+    right: 20px; /* Adjust based on padding */
+  }
+  
+  .carousel-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .indicator {
+    width: 12px;
+    height: 12px;
+    margin: 0 5px;
+    background: #ccc;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .indicator.active {
+    background: #007bff; /* Primary color, adjust as needed */
+  }
+  
+  .indicator:hover {
+    background: #0056b3;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .carousel {
+      padding: 10px;
+    }
+  
+    .carousel-image {
+      height: 300px; /* Smaller height for smaller screens */
+    }
+  
+    .carousel-title {
+      font-size: 1.2rem;
+      padding: 10px;
+    }
+  
+    .carousel-arrow {
+      width: 30px;
+      height: 30px;
+      font-size: 1.2rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .carousel-image {
+      height: 200px;
+    }
+  
+    .carousel-title {
+      font-size: 1rem;
+    }
+  }
