@@ -8,6 +8,7 @@ import Cartel from "../Componentes/Cartel";
 export default function Home() {
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -32,6 +33,20 @@ export default function Home() {
     getData();
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+
   return (
     <div className="container">
       <div className="row">
@@ -49,6 +64,17 @@ export default function Home() {
           ))}
         </div>
       )}
-    </div>
-  );
-}
+      
+      {showScrollTop && (
+            <button
+              onClick={scrollToTop}
+              className="scroll-top-btn"
+              aria-label="Volver al inicio"
+            >
+              <i className="bi bi-arrow-up-circle-fill fs-3"></i>
+            </button>
+          )}
+        </div>
+      );
+  }
+  
