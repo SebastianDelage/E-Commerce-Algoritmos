@@ -8,18 +8,35 @@ const LoginModal = ({ onClose, onLoginSuccess }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Simulación de login con credenciales fijas
-    if (email === "abc@abc.com" && password === "1234") {
-      const user = { email, role: "admin" };
+    setError("");
+    
+    try {
+      const response = await fetch("https://tu-api.com/Usuario/Login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Credenciales inválidas");
+      }
+  
+      const result = await response.json();
+      const user = {
+        email: result.data.email,
+        nombre: result.data.nombre,
+        role: result.data.perfil.toLowerCase(), // "admin" o "usuario"
+      };
+  
       localStorage.setItem("user", JSON.stringify(user));
-      onLoginSuccess(user); // Notifica al Header que el login fue exitoso
-    } else {
-      setError("Credenciales inválidas");
+      onLoginSuccess(user); // Notifica al componente padre
+    } catch (err) {
+      setError(err.message);
     }
   };
+  
 
   return (
     <div className="login-modal-overlay">
