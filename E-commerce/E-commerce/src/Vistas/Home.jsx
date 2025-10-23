@@ -48,10 +48,10 @@ export default function Home() {
 
 
   return (
-    <div className="container">
-      <div className="row">
-        <Cartel></Cartel>
-      </div>
+
+      <div className="container px-0" style={{ maxWidth: '1100px', margin: '0 auto' }}>
+        <Cartel />
+
 
       {cargando ? (
         <p>Cargando productos...</p>
