@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { useId } from "react";
 
+
+
 export default function ProductCard({ producto }) {
-  const uniqueId = useId(); // 🔹 genera un id único por componente
+  const uniqueId = useId(); 
 
   const handleCarouselClick = (e) => {
     e.stopPropagation();
@@ -15,6 +17,8 @@ export default function ProductCard({ producto }) {
       to={producto?.id ? `/producto/${producto.id}` : "#"}
       className="text-decoration-none text-dark"
     >
+      
+
       <div className="card h-100 m-2" style={{ cursor: "pointer" }}>
         <div id={carouselId} className="carousel slide">
           <div className="carousel-indicators">
@@ -35,47 +39,43 @@ export default function ProductCard({ producto }) {
               onClick={handleCarouselClick}
             ></button>
           </div>
-
+          
           <div className="carousel-inner">
-            {producto.imagenUrl ? (
-              <>
-                <div className="carousel-item active">
-                  <img
-                    src={producto.imagenUrl}
-                    className="card-img-top"
-                    alt={`${producto.nombre} - Imagen 1`}
-                  />
-                </div>
-                <div className="carousel-item">
-                  <img
-                    src={
-                      producto.imagenUrl2
-                        ? producto.imagenUrl2
-                        : producto.imagenUrl
-                    }
-                    className="card-img-top"
-                    alt={`${producto.nombre} - Imagen 2`}
-                  />
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="carousel-item active">
-                  <img
-                    src="http://via.placeholder.com/200"
-                    className="card-img-top"
-                    alt="Imagen no disponible"
-                  />
-                </div>
-                <div className="carousel-item">
-                  <img
-                    src="http://via.placeholder.com/200"
-                    className="card-img-top"
-                    alt="Imagen no disponible"
-                  />
-                </div>
-              </>
-            )}
+          {producto.imagenUrl ? (
+            <>
+              <div className="carousel-item active">
+                <img
+                  src={producto.imagenUrl}
+                  className="card-img-top"
+                  alt={`${producto.nombre} - Imagen 1`}
+                />
+              </div>
+              <div className="carousel-item">
+                <img
+                  src={producto.imagenUrl2}
+                  className="card-img-top"
+                  alt={`${producto.nombre} - Imagen 2`}
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="carousel-item active">
+                <img
+                  src="http://via.placeholder.com/200"
+                  className="card-img-top"
+                  alt="Imagen no disponible"
+                />
+              </div>
+              <div className="carousel-item">
+                <img
+                  src="http://via.placeholder.com/200"
+                  className="card-img-top"
+                  alt="Imagen no disponible"
+                />
+              </div>
+            </>
+)}
           </div>
 
           <button
@@ -108,3 +108,4 @@ export default function ProductCard({ producto }) {
     </Link>
   );
 }
+
