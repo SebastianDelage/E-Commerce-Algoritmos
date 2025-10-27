@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useId } from "react";
-
+import "../assets/styles/ProductCard.css";
 
 
 export default function ProductCard({ producto }) {

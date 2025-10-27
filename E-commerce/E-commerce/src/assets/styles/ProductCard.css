@@ -1,0 +1,98 @@
+.card {
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    border: 1px solid #ff9153;
+  }
+  
+  .carousel {
+    position: relative;
+  }
+
+  
+  /* --- Flechas del carrusel --- */
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    background-color: rgba(70, 69, 69, 0.8);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background-size: 70%;
+    filter: invert(0.2);
+    transition: background-color 0.2s ease;
+  }
+  
+  .carousel-control-prev-icon:hover,
+  .carousel-control-next-icon:hover {
+    background-color: rgba(70, 69, 69, 0.8);
+  }
+  
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 12%;
+  }
+  
+  .carousel-indicators {
+    bottom: 5px;
+  }
+  
+  .carousel-indicators [data-bs-target] {
+    background-color: #ccc;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+  
+  .carousel-indicators .active {
+    background-color: #333;
+    width: 8px;
+    height: 8px;
+  }
+  
+  /* --- Contenido del producto --- */
+  .card-body {
+    text-align: center;
+    padding: 1rem 0.75rem 1.25rem;
+  }
+  
+  .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 0.25rem;
+  }
+  
+  .card-text {
+    font-size: 0.95rem;
+    color: #000000;
+    margin-bottom: 0;
+  }
+  
+  .carousel-item img {
+    transition: transform 0.4s ease;
+  }
+  
+  .carousel-item.active img:hover {
+    transform: scale(1.04);
+  
+  }
+  .card-img-top {
+    border: 1px solid #ff9153;
+  }
+  .card-img-top:hover {
+    border: 1px solid #ff9153;
+  }
+  
+  
+  a {
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+  
