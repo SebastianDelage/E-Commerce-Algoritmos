@@ -11,32 +11,37 @@ const LoginModal = ({ onClose, onLoginSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    
+
     try {
-      const response = await fetch("https://tu-api.com/Usuario/Login", {
+      const response = await fetch("http://localhost:5079/Usuario/Login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-  
-      if (!response.ok) {
-        throw new Error("Credenciales inválidas");
-      }
-  
+
       const result = await response.json();
+
+      if (!response.ok || !result.success || !result.data) {
+        throw new Error(result.message || "Credenciales inválidas");
+      }
+
+      // ✅ Acceder correctamente a la estructura del backend
+      const { token, usuario } = result.data;
+
       const user = {
-        email: result.data.email,
-        nombre: result.data.nombre,
-        role: result.data.perfil.toLowerCase(), // "admin" o "usuario"
+        email: usuario.email,
+        nombre: usuario.nombre,
+        role: usuario.perfil.toLowerCase(),
       };
-  
+
+      localStorage.setItem("authToken", token);
       localStorage.setItem("user", JSON.stringify(user));
-      onLoginSuccess(user); // Notifica al componente padre
+
+      onLoginSuccess(user);
     } catch (err) {
       setError(err.message);
     }
   };
-  
 
   return (
     <div className="login-modal-overlay">
