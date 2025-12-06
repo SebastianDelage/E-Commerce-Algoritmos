@@ -7,7 +7,7 @@ export default function Promociones() {
 
   const getData = async () => {
     try {
-      const response = await fetch("http://localhost:5079/Producto/GetProductoPromocion?id=1", {
+      const response = await fetch("http://localhost:5079/Producto/GetProductoPromocion?estado=1", {
         method: "GET",
         mode: "cors",
       });
@@ -33,28 +33,35 @@ export default function Promociones() {
   if (cargando) return <p>Cargando productos...</p>;
 
 
-  const productosPorPromo = productos.reduce((grupos, producto) => {
-    
-    const promo = producto.nombrePromo || "Sin promoción";
-    if (!grupos[promo]) grupos[promo] = [];
-    grupos[promo].push(producto);
-    return grupos;
-  }, {});
+const productosPorPromo = productos.reduce((grupos, producto) => {
+  const promo = producto.nombrePromo;
+  (grupos[promo] ??= []).push(producto);
+  return grupos;
+}, {});
 
-  return (
-    <div className="container">
-      {Object.keys(productosPorPromo).map((promoNombre) => (
-        <div key={promoNombre} className="mb-5">
-          <h2 className="text-center text-uppercase mb-4">{promoNombre}</h2>
-          <div className="row">
-            {productosPorPromo[promoNombre].map((producto) => (
-              <div className="col-md-4 mb-3" key={producto.producto_id}>
-                <ProductCard producto={producto} />
-              </div>
-            ))}
-          </div>
+
+return (
+  <div className="container">
+    {Object.keys(productosPorPromo).map((promoNombre) => (
+      <div key={promoNombre} className="mb-5">
+        {/* No mostramos el h2 si es undefined o "undefined" */}
+        {promoNombre && promoNombre !== "undefined" && (
+          <h2 className="text-center text-uppercase mb-4">
+            {promoNombre}
+          </h2>
+        )}
+
+        <div className="row">
+          {productosPorPromo[promoNombre].map((producto) => (
+            <div className="col-md-4 mb-3" key={producto.producto_id}>
+              <ProductCard producto={producto} />
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-  );
+      </div>
+    ))}
+  </div>
+);
+
+
 }
