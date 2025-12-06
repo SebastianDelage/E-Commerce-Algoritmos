@@ -1,11 +1,12 @@
 .carousel {
-    position: relative;
-    max-width: 100%; /* Adjust as needed */
-    margin: 0 auto;
-    padding: 20px;
-    overflow: hidden;
-  }
-  
+  width: 100%;
+  max-width: 1100px; /* Ajustá este valor según lo que consideres "menos ancho" */
+  margin: 0 auto;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
   .carousel-card {
     display: flex;
     flex-direction: column;
@@ -16,16 +17,18 @@
     overflow: hidden;
     transition: transform 0.3s ease-in-out;
   }
+
   
 
   .carousel-image {
     width: 100%;
-    height: 400px; /* Adjust height as needed */
-    object-fit: cover; /* Ensures images scale nicely */
+    height: 60vh; /* 60% de la altura de la ventana */
+    max-height: 700px;
+    min-height: 300px;
+    object-fit: cover;
     transition: opacity 0.5s ease-in-out;
   }
 
-  
   .carousel-arrow {
     position: absolute;
     top: 50%;
@@ -41,68 +44,25 @@
     transition: background 0.3s ease;
     z-index: 1; /* Ensure arrows are above carousel content */
   }
-  
+
+
+@media (max-width: 768px) {
+  .carousel-image {
+    height: 250px;
+  }
+
+  .carousel-arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+
   .carousel-arrow.left {
-    left: 20px; /* Adjust based on padding */
+    left: 10px;
   }
-  
+
   .carousel-arrow.right {
-    right: 20px; /* Adjust based on padding */
+    right: 10px;
   }
-  
-  .carousel-indicators {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
-  
-  .indicator {
-    width: 12px;
-    height: 12px;
-    margin: 0 5px;
-    background: #ccc;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .indicator.active {
-    background: #007bff; /* Primary color, adjust as needed */
-  }
-  
-  .indicator:hover {
-    background: #0056b3;
-  }
-  
-  /* Responsive design */
-  @media (max-width: 768px) {
-    .carousel {
-      padding: 10px;
-    }
-  
-    .carousel-image {
-      height: 300px; /* Smaller height for smaller screens */
-    }
-  
-    .carousel-title {
-      font-size: 1.2rem;
-      padding: 10px;
-    }
-  
-    .carousel-arrow {
-      width: 30px;
-      height: 30px;
-      font-size: 1.2rem;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .carousel-image {
-      height: 200px;
-    }
-  
-    .carousel-title {
-      font-size: 1rem;
-    }
-  }
+}
+
