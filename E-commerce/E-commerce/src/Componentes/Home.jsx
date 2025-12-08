@@ -13,7 +13,7 @@ export default function Home() {
     <div className="row">
       {productos.map(producto => (
         <div className="col-md-4 mb-4" key={producto.id}>
-          <ProductCard producto={producto} />
+          <ProductCard producto={producto}  />
         </div>
       ))}
     </div>

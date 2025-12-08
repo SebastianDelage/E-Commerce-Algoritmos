@@ -59,7 +59,7 @@ export default function Home() {
         <div className="row">
           {productos.map((producto) => (
             <div className="col-md-4 mb-3" key={producto.producto_id}>
-              <ProductCard producto={producto} />
+              <ProductCard producto={producto} usuario={user} />
             </div>
           ))}
         </div>
