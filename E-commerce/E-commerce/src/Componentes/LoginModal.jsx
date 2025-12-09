@@ -8,38 +8,16 @@ const LoginModal = ({ onClose, onLoginSuccess }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
 
-    try {
-      const response = await fetch("http://localhost:5079/Usuario/Login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok || !result.success || !result.data) {
-        throw new Error(result.message || "Credenciales inválidas");
-      }
-
-      // ✅ Acceder correctamente a la estructura del backend
-      const { token, usuario } = result.data;
-
-      const user = {
-        email: usuario.email,
-        nombre: usuario.nombre,
-        role: usuario.perfil.toLowerCase(),
-      };
-
-      localStorage.setItem("authToken", token);
+    // Simulación de login con credenciales fijas
+    if (email === "abc@abc.com" && password === "1234") {
+      const user = { email, role: "admin" };
       localStorage.setItem("user", JSON.stringify(user));
-
-      onLoginSuccess(user);
-    } catch (err) {
-      setError(err.message);
+      onLoginSuccess(user); // Notifica al Header que el login fue exitoso
+    } else {
+      setError("Credenciales inválidas");
     }
   };
 
