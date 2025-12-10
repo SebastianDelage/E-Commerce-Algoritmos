@@ -8,7 +8,7 @@ import Cartel from "../Componentes/Cartel";
 export default function Home() {
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
-  const [user, setUser] = useState({perfil_id:1});
+  const [user, setUser] = useState({perfil_id:2});
 
   useEffect(() => {
     const getData = async () => {
