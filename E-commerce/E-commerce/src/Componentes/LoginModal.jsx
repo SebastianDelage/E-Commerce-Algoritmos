@@ -5,6 +5,9 @@ import HypeConColor from "../../public/Imagenes/Logo/HypeConColor.png";
 
 const API_LOGIN_URL = "http://localhost:5079/Usuario/Login";
 
+
+
+
 const LoginModal = ({ onClose, onLoginSuccess }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
