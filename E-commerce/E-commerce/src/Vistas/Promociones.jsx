@@ -44,12 +44,6 @@ return (
   <div className="container">
     {Object.keys(productosPorPromo).map((promoNombre) => (
       <div key={promoNombre} className="mb-5">
-        {/* No mostramos el h2 si es undefined o "undefined" */}
-        {promoNombre && promoNombre !== "undefined" && (
-          <h2 className="text-center text-uppercase mb-4">
-            {promoNombre}
-          </h2>
-        )}
 
         <div className="row">
           {productosPorPromo[promoNombre].map((producto) => (

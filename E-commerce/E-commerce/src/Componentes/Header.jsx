@@ -1,75 +1,58 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaTools } from "react-icons/fa";
 
 import logo from "../../public/Imagenes/Logo/logo.png";
 import "../assets/styles/Header.css";
 import CartSlide from "../Componentes/CartSlide";
 import LoginModal from "../Componentes/LoginModal";
 
-const Header = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
+const Header = ({ user, setUser }) => {
   const [showCart, setShowCart] = useState(false);
-
-  //Constantes para redireccion y verificacion de usuario logueado
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Verifica si hay usuario en localStorage
-    const user = localStorage.getItem("user");
-    setIsLoggedIn(!!user); // true si hay user, false si no
-  }, []);
-
-  const handleCartClick = () => {
-    console.log("Carrito abierto, showCart:",true);
-    setShowCart(true);
-  };
-
-  const handleCloseCart = () => {
-    console.log("Carrito cerrado, showCart:",false);
-    setShowCart(false);
-  };
+  const handleCartClick = () => setShowCart(true);
+  const handleCloseCart = () => setShowCart(false);
 
   const handleProfileClick = () => {
-    const user = localStorage.getItem("user");
     if (user) {
-      // Para redirigir si el usuario esta logueado
       navigate("/perfil");
     } else {
-      // Muestra el cartel de inicio de sesion
       setShowLoginModal(true);
     }
   };
 
-  const handleLoginSuccess = (user) => {
-    // Guarda usuario (hardcodeado por el momento)
-    localStorage.setItem("user", JSON.stringify(user));
-    setIsLoggedIn(true);
+  const handleLoginSuccess = (loggedUser) => {
+    // guardamos en localStorage y en el estado global (App)
+    localStorage.setItem("user", JSON.stringify(loggedUser));
+    setUser(loggedUser);
     setShowLoginModal(false);
-    navigate("/perfil");
+    navigate("/"); // 👈 vuelve al inicio APENAS APRETÁS "Ingresar" y es válido
   };
-
-  const [showSearch, setShowSearch] = useState(false);
 
   const handleSearchClick = () => {
     setShowSearch(!showSearch);
   };
 
-
   return (
     <div className="container py-2">
       <div className="row align-items-center">
         {/* IZQUIERDA: búsqueda */}
-
         <div className="col-4 d-flex align-items-center position-relative">
-        <i className="bi bi-search fs-4 me-3 buscar cursor-pointer" onClick={handleSearchClick} />
-        <input
-          type="text" placeholder="Buscar..." 
-          className={`form-control search-input ${showSearch ? "expand" : ""}`}
-        />
-      </div>
+          <i
+            className="bi bi-search fs-4 me-3 buscar cursor-pointer"
+            onClick={handleSearchClick}
+          />
+          <input
+            type="text"
+            placeholder="Buscar..."
+            className={`form-control search-input ${
+              showSearch ? "expand" : ""
+            }`}
+          />
+        </div>
 
         {/* CENTRO: logo */}
         <div className="col-4 text-center">
@@ -78,28 +61,32 @@ const Header = () => {
           </Link>
         </div>
 
-        {/* DERECHA: carrito, favoritos, login */}
+        {/* DERECHA */}
         <div className="col-4 d-flex justify-content-end gap-3">
+          {/* ADMIN: si el usuario es admin, muestra botón de panel */}
+          {user?.role === "admin" && (
+            <button
+              className="btn btn-link p-0"
+              onClick={() => navigate("/back")}
+            >
+              <i className="admin bi bi-tools fs-4" title="Panel Admin" />
+            </button>
+          )}
 
-        {user?.role === "admin" && (
-          <button className="btn btn-link p-0" onClick={() => navigate("/back")}>
-            <i className="admin bi bi-tools fs-4" title="Panel Admin" />
-          </button>
-        )}
-
-          {/* Botón del carrito */}
+          {/* Carrito */}
           <button className="btn btn-link p-0" onClick={handleCartClick}>
             <i className="carrito bi bi-cart fs-4" />
           </button>
 
+          {/* Favoritos */}
           <Link to="/favoritos">
             <i className="favorito bi bi-heart fs-4" />
           </Link>
 
+          {/* Perfil / Login */}
           <button className="btn btn-link p-0" onClick={handleProfileClick}>
             <i className="perfil bi bi-person-circle fs-4" />
           </button>
-                    
         </div>
       </div>
 
@@ -121,7 +108,7 @@ const Header = () => {
           onClose={() => setShowLoginModal(false)}
           onLoginSuccess={handleLoginSuccess}
         />
-      )}      
+      )}
     </div>
   );
 };

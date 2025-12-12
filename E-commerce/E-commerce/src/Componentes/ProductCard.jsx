@@ -1,111 +1,114 @@
+// src/Componentes/ProductCard.jsx
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useId } from "react";
-import "../assets/styles/ProductCard.css";
+import FormEdit from "./FormEdit";
 
+export default function ProductCard({ producto, usuario }) {
+  const esAdmin = usuario?.perfil_id === 2;
 
-export default function ProductCard({ producto }) {
-  const uniqueId = useId(); 
+  const [productoActual, setProductoActual] = useState(producto);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleCarouselClick = (e) => {
-    e.stopPropagation();
+  // por si el padre vuelve a traer productos nuevos
+  useEffect(() => {
+    setProductoActual(producto);
+  }, [producto]);
+
+  const handleOpenModal = () => setIsModalOpen(true);
+
+  const handleCloseModal = () => {
+    if (!isSaving) setIsModalOpen(false);
   };
 
-  const carouselId = `carousel-${producto.id || uniqueId}`;
+  const handleSave = async (formData) => {
+    try {
+      setIsSaving(true);
+
+      const id =
+        productoActual.id_producto ?? productoActual.id ?? productoActual.producto_id;
+
+      const response = await fetch(
+        `http://localhost:5079/Producto/UpdateProducto?id_producto=${id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      console.log("STATUS UPDATE:", response.status);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Respuesta de error del back:", errorText);
+        alert("Error al actualizar el producto (ver consola)");
+        return;
+      }
+
+      // si tu back devuelve { success, statusCode, message, data: producto }
+      let updated = formData;
+      try {
+        const json = await response.json();
+        console.log("Respuesta JSON del back:", json);
+        if (json.data) updated = json.data;
+      } catch {
+        // si no devuelve json, al menos uso lo editado
+      }
+
+      // acá se actualiza lo que se ve en la card
+      setProductoActual((prev) => ({
+        ...prev,
+        ...updated,
+      }));
+
+      setIsModalOpen(false);
+    } catch (err) {
+      console.error("Error en fetch UpdateProducto:", err);
+      alert("Ocurrió un error al actualizar el producto (ver consola)");
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
-    <Link
-      to={producto?.id ? `/producto/${producto.id}` : "#"}
-      className="text-decoration-none text-dark"
-    >
-      
+    <>
+      <div className="card h-100 m-2">
+        <img
+          src={productoActual.imagenUrl}
+          className="card-img-top"
+          alt={productoActual.nombre}
+        />
+        <div className="card-body ">
+          <h5 className="card-title">{productoActual.nombre}</h5>
+          <p className="card-text">${productoActual.precio}</p>
 
-      <div className="card h-100 m-2" style={{ cursor: "pointer" }}>
-        <div id={carouselId} className="carousel slide">
-          <div className="carousel-indicators">
+          {esAdmin ? (
             <button
               type="button"
-              data-bs-target={`#${carouselId}`}
-              data-bs-slide-to="0"
-              className="active"
-              aria-current="true"
-              aria-label="Slide 1"
-              onClick={handleCarouselClick}
-            ></button>
-            <button
-              type="button"
-              data-bs-target={`#${carouselId}`}
-              data-bs-slide-to="1"
-              aria-label="Slide 2"
-              onClick={handleCarouselClick}
-            ></button>
-          </div>
-          
-          <div className="carousel-inner">
-          {producto.imagenUrl ? (
-            <>
-              <div className="carousel-item active">
-                <img
-                  src={producto.imagenUrl}
-                  className="card-img-top"
-                  alt={`${producto.nombre} - Imagen 1`}
-                />
-              </div>
-              <div className="carousel-item">
-                <img
-                  src={producto.imagenUrl2}
-                  className="card-img-top"
-                  alt={`${producto.nombre} - Imagen 2`}
-                />
-              </div>
-            </>
+              className="btn btn-warning"
+              onClick={handleOpenModal}
+            >
+              Administrar
+            </button>
           ) : (
-            <>
-              <div className="carousel-item active">
-                <img
-                  src="http://via.placeholder.com/200"
-                  className="card-img-top"
-                  alt="Imagen no disponible"
-                />
-              </div>
-              <div className="carousel-item">
-                <img
-                  src="http://via.placeholder.com/200"
-                  className="card-img-top"
-                  alt="Imagen no disponible"
-                />
-              </div>
-            </>
-)}
-          </div>
-
-          <button
-            className="carousel-control-prev"
-            type="button"
-            data-bs-target={`#${carouselId}`}
-            data-bs-slide="prev"
-            onClick={handleCarouselClick}
-          >
-            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Previous</span>
-          </button>
-          <button
-            className="carousel-control-next"
-            type="button"
-            data-bs-target={`#${carouselId}`}
-            data-bs-slide="next"
-            onClick={handleCarouselClick}
-          >
-            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Next</span>
-          </button>
-        </div>
-
-        <div className="card-body">
-          <h5 className="card-title">{producto.nombre}</h5>
-          <p className="card-text">${producto.precio}</p>
+            <Link
+              to={`/producto/${productoActual.id ?? productoActual.id_producto}`}
+              className="btn btn-primary"
+            >
+              Ver más
+            </Link>
+          )}
         </div>
       </div>
-    </Link>
+
+      <FormEdit
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        initialData={productoActual}
+        onSave={handleSave}
+        isSaving={isSaving}
+      />
+    </>
   );
 }
-
