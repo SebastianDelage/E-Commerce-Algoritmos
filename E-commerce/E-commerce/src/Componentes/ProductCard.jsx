@@ -112,8 +112,6 @@ const handleAddToCart = () => {
           <p className="card-text">${productoActual.precio}</p>
 
           {esAdmin ? (
-          ) : (
-            <Link
   <div className="d-flex gap-2">
     <button
       type="button"
