@@ -2,6 +2,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import FormEdit from "./FormEdit";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
+import Swal from "sweetalert2";
+
 
 export default function ProductCard({ producto, usuario }) {
   const esAdmin = usuario?.perfil_id === 2;
@@ -9,6 +13,8 @@ export default function ProductCard({ producto, usuario }) {
   const [productoActual, setProductoActual] = useState(producto);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const { addToCart } = useContext(CartContext);
+
 
   // por si el padre vuelve a traer productos nuevos
   useEffect(() => {
@@ -20,6 +26,28 @@ export default function ProductCard({ producto, usuario }) {
   const handleCloseModal = () => {
     if (!isSaving) setIsModalOpen(false);
   };
+
+const handleAddToCart = () => {
+  addToCart({
+    id: productoActual.id ?? productoActual.id_producto,
+    name: productoActual.nombre,
+    price: productoActual.precio,
+    image: productoActual.imagenUrl,
+    quantity: 1,
+  });
+
+
+  Swal.fire({
+    icon: "success",
+    title: "Producto agregado",
+    text: `${productoActual.nombre} fue agregado al carrito`,
+    timer: 1500,
+    showConfirmButton: false,
+    toast: true,
+    position: "top-end",
+  });
+};
+
 
   const handleSave = async (formData) => {
     try {
@@ -84,21 +112,34 @@ export default function ProductCard({ producto, usuario }) {
           <p className="card-text">${productoActual.precio}</p>
 
           {esAdmin ? (
-            <button
-              type="button"
-              className="btn btn-warning"
-              onClick={handleOpenModal}
-            >
-              Administrar
-            </button>
           ) : (
             <Link
-              to={`/producto/${productoActual.id ?? productoActual.id_producto}`}
-              className="btn btn-primary"
-            >
-              Ver más
-            </Link>
-          )}
+  <div className="d-flex gap-2">
+    <button
+      type="button"
+      className="btn btn-warning"
+      onClick={handleOpenModal}
+    >
+      Administrar
+    </button>
+
+    <button
+      type="button"
+      className="btn btn-success"
+      onClick={handleAddToCart}
+    >
+      Agregar al carrito
+    </button>
+  </div>
+) : (
+  <Link
+    to={`/producto/${productoActual.id ?? productoActual.id_producto}`}
+    className="btn btn-primary"
+  >
+    Ver más
+  </Link>
+)}
+
         </div>
       </div>
 
