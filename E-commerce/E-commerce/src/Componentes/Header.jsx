@@ -13,6 +13,8 @@ const Header = ({ user, setUser }) => {
 
   const navigate = useNavigate();
 
+  const isAdmin = Number(user?.perfil_id) === 2;
+
   const handleCartClick = () => setShowCart(true);
   const handleCloseCart = () => setShowCart(false);
 
@@ -24,12 +26,21 @@ const Header = ({ user, setUser }) => {
     }
   };
 
+  // 🔥 ESTA FUNCIÓN ES LA CLAVE
   const handleLoginSuccess = (loggedUser) => {
-    // guardamos en localStorage y en el estado global (App)
-    localStorage.setItem("user", JSON.stringify(loggedUser));
+    console.log("LOGIN OK:", loggedUser);
+
+    // ✅ seteamos el user global (App)
     setUser(loggedUser);
+
+    // ✅ cerramos el modal
     setShowLoginModal(false);
-    navigate("/"); // 👈 vuelve al inicio APENAS APRETÁS "Ingresar" y es válido
+
+    // ❌ NO guardamos en localStorage (sesión no persistente)
+    // localStorage.setItem("user", JSON.stringify(loggedUser));
+
+    // opcional: volver al home
+    navigate("/");
   };
 
   const handleSearchClick = () => {
@@ -63,8 +74,8 @@ const Header = ({ user, setUser }) => {
 
         {/* DERECHA */}
         <div className="col-4 d-flex justify-content-end gap-3">
-          {/* ADMIN: si el usuario es admin, muestra botón de panel */}
-          {user?.role === "admin" && (
+          {/* ADMIN */}
+          {isAdmin && (
             <button
               className="btn btn-link p-0"
               onClick={() => navigate("/back")}

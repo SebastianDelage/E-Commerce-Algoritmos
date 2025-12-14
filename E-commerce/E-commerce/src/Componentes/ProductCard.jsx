@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import FormEdit from "./FormEdit";
 
-export default function ProductCard({ producto, usuario }) {
-  const esAdmin = usuario?.perfil_id === 2;
+export default function ProductCard({ producto, usuario, onUpdateProducto }) {
+  // ✅ Admin solo si existe usuario y perfil_id === 2
+  const esAdmin = Number(usuario?.perfil_id) === 1;
 
   const [productoActual, setProductoActual] = useState(producto);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  // por si el padre vuelve a traer productos nuevos
   useEffect(() => {
     setProductoActual(producto);
   }, [producto]);
@@ -26,10 +26,12 @@ export default function ProductCard({ producto, usuario }) {
       setIsSaving(true);
 
       const id =
-        productoActual.id_producto ?? productoActual.id ?? productoActual.producto_id;
+        productoActual.producto_id ??
+        productoActual.id_producto ??
+        productoActual.id;
 
       const response = await fetch(
-        `http://localhost:5079/Producto/UpdateProducto?id_producto=${id}`,
+        `http://localhost:5079/Producto/UpdateProducto?producto_id=${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -46,21 +48,32 @@ export default function ProductCard({ producto, usuario }) {
         return;
       }
 
-      // si tu back devuelve { success, statusCode, message, data: producto }
       let updated = formData;
       try {
         const json = await response.json();
         console.log("Respuesta JSON del back:", json);
-        if (json.data) updated = json.data;
-      } catch {
-        // si no devuelve json, al menos uso lo editado
-      }
+        if (json?.data) updated = json.data;
+      } catch {}
 
-      // acá se actualiza lo que se ve en la card
-      setProductoActual((prev) => ({
-        ...prev,
+      const updatedProduct = {
+        ...productoActual,
         ...updated,
-      }));
+
+        // 🔒 conserva imagen si no vino en la respuesta/payload
+        imagenUrl: updated?.imagenUrl ?? productoActual.imagenUrl,
+
+        producto_id: id,
+        genero_id: Number(updated?.genero_id ?? productoActual.genero_id),
+        marca_id: Number(updated?.marca_id ?? productoActual.marca_id),
+        categoria_id: Number(updated?.categoria_id ?? productoActual.categoria_id),
+        precio: Number(updated?.precio ?? productoActual.precio),
+      };
+
+      setProductoActual(updatedProduct);
+
+      if (typeof onUpdateProducto === "function") {
+        onUpdateProducto(updatedProduct);
+      }
 
       setIsModalOpen(false);
     } catch (err) {
@@ -75,11 +88,12 @@ export default function ProductCard({ producto, usuario }) {
     <>
       <div className="card h-100 m-2">
         <img
-          src={productoActual.imagenUrl}
+          src={productoActual.imagenUrl || "/Imagenes/default.png"}
           className="card-img-top"
           alt={productoActual.nombre}
         />
-        <div className="card-body ">
+
+        <div className="card-body">
           <h5 className="card-title">{productoActual.nombre}</h5>
           <p className="card-text">${productoActual.precio}</p>
 
@@ -93,7 +107,7 @@ export default function ProductCard({ producto, usuario }) {
             </button>
           ) : (
             <Link
-              to={`/producto/${productoActual.id ?? productoActual.id_producto}`}
+              to={`/producto/${productoActual.producto_id}`}
               className="btn btn-primary"
             >
               Ver más
@@ -102,13 +116,17 @@ export default function ProductCard({ producto, usuario }) {
         </div>
       </div>
 
-      <FormEdit
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        initialData={productoActual}
-        onSave={handleSave}
-        isSaving={isSaving}
-      />
+      {/* ✅ Solo renderizamos el modal si es admin */}
+      {esAdmin && (
+        <FormEdit
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          initialData={productoActual}
+          onSave={handleSave}
+          isSaving={isSaving}
+        />
+      )}
     </>
   );
 }
+

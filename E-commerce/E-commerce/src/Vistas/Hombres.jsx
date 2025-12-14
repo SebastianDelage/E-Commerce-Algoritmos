@@ -1,52 +1,30 @@
+// src/Paginas/Hombres.jsx
 import "../assets/styles/ProductItem.css";
-import { useState, useEffect } from 'react';
 import ProductCard from "../Componentes/ProductCard";
-import Cartel from "../Componentes/Cartel";
 
-export default function Hombres() {
-  const [productos, setProductos] = useState([]);
-  const [cargando, setCargando] = useState(true);
+export default function Hombres({ productos, cargando, user, onUpdateProducto }) {
+  // 🔥 SOLO FILTRA – NO FETCH
+  const productosHombres = productos.filter(
+    (p) => Number(p.genero_id) === 1
+  );
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await fetch("http://localhost:5079/Producto/GetProductoByGenero?genero_id=1", {
-          method: "GET",
-          mode: "cors"
-        });
-        const data = await response.json();
-        if (Array.isArray(data.data)) {
-          setProductos(data.data);
-        } else {
-          console.warn("La respuesta no contiene un array:", data);
-        }
-      } catch (error) {
-        console.error("Error al obtener productos:", error);
-      } finally {
-        setCargando(false);
-      }
-    };
-
-    getData();
-  }, []);
-
-      return (
-        <div className="container">
-          <div className="row">
-          </div>
-    
-          {cargando ? (
-            <p>Cargando productos...</p>
-          ) : (
-            <div className="row">
-              {productos.map((producto) => (
-                <div className="col-md-4 mb-3" key={producto.producto_id}>
-                  <ProductCard producto={producto} />
-                </div>
-              ))}
+  return (
+    <div className="container">
+      {cargando ? (
+        <p>Cargando productos...</p>
+      ) : (
+        <div className="row">
+          {productosHombres.map((producto) => (
+            <div className="col-md-4 mb-3" key={producto.producto_id}>
+              <ProductCard
+                producto={producto}
+                usuario={user}
+                onUpdateProducto={onUpdateProducto}
+              />
             </div>
-          )}
+          ))}
         </div>
-      );
-  }
-  
+      )}
+    </div>
+  );
+}

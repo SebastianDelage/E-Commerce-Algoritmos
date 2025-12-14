@@ -5,9 +5,6 @@ import HypeConColor from "../../public/Imagenes/Logo/HypeConColor.png";
 
 const API_LOGIN_URL = "http://localhost:5079/Usuario/Login";
 
-
-
-
 const LoginModal = ({ onClose, onLoginSuccess }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,47 +24,41 @@ const LoginModal = ({ onClose, onLoginSuccess }) => {
       try {
         setLoading(true);
 
-        console.log("Enviando datos de login:", {
-          email,
-          contraseña: password,
-        });
-
         const response = await fetch(API_LOGIN_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             email,
-            contraseña: password, // 👈 COINCIDE CON EL MODELO DEL BACK
+            contraseña: password, // coincide con el back
           }),
         });
 
         const data = await response.json();
         console.log("Respuesta de la API:", data);
 
-        // Validación de error API
-        if (!response.ok || !data.success) {
-          setError(data.message || "Credenciales inválidas");
+        // ✅ VALIDACIÓN CORRECTA
+        const ok =
+          response.ok && (data?.success === true || data?.succes === true);
+
+        if (!ok) {
+          setError(data?.message || "Credenciales inválidas");
           return;
         }
 
-        // Usuario devuelto por la API
         const apiUser = data.data;
 
-        // Preparamos user para el front
+        // ✅ USER PARA EL FRONT
         const user = {
           ...apiUser,
-          role: apiUser.perfilNombre || apiUser.PerfilNombre || null,
+          perfil_id: Number(apiUser.perfil_id), // puede venir undefined, no rompe
         };
 
-        // Guardamos en localStorage
-        localStorage.setItem("user", JSON.stringify(user));
-
-        // Avisamos al padre que el login fue exitoso
+        // ✅ INICIAR SESIÓN (App/Header)
         if (typeof onLoginSuccess === "function") {
           onLoginSuccess(user);
         }
 
-        // Cerramos el modal
+        // ✅ CERRAR MODAL
         if (typeof onClose === "function") {
           onClose();
         }
