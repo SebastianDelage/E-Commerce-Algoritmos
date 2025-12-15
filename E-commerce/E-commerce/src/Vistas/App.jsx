@@ -13,39 +13,25 @@ import Mujeres from "./Mujeres.jsx";
 import Promociones from "./Promociones.jsx";
 
 function App() {
-  // ✅ USER GLOBAL (empieza sin sesión)
+  // Sesión global
   const [user, setUser] = useState(null);
 
-  // ✅ PRODUCTOS GLOBALES
+  // Productos globales
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
 
-  // ❌ ELIMINADO: no borres user al montar
-  // useEffect(() => {
-  //   localStorage.removeItem("user");
-  // }, []);
-
-  // ✅ FETCH ÚNICO DE PRODUCTOS
+  // Cargar productos
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetch("http://localhost:5079/Producto/GetAll", {
-          method: "GET",
-          mode: "cors",
-        });
-
+        const response = await fetch("http://localhost:5079/Producto/GetAll");
         const data = await response.json();
 
         if (Array.isArray(data.data)) {
-          setProductos(
-            data.data.map((p) => ({
-              ...p,
-              genero_id: Number(p.genero_id),
-            }))
-          );
+          setProductos(data.data.map((p) => ({ ...p, genero_id: Number(p.genero_id) })));
         }
-      } catch (error) {
-        console.error("Error al obtener productos:", error);
+      } catch (e) {
+        console.error(e);
       } finally {
         setCargando(false);
       }
@@ -54,70 +40,30 @@ function App() {
     getData();
   }, []);
 
-  // 🔥 ACTUALIZAR PRODUCTO GLOBAL
+  // Actualizar producto en el array global
   const onUpdateProducto = (productoActualizado) => {
     setProductos((prev) =>
-      prev.map((p) =>
-        p.producto_id === productoActualizado.producto_id
-          ? productoActualizado
-          : p
-      )
+      prev.map((p) => (p.producto_id === productoActualizado.producto_id ? productoActualizado : p))
     );
   };
 
-  const isAdmin = user?.perfil_id === 2;
+  // Validación admin (mantener consistente con Header/ProductCard)
+  const isAdmin = Number(user?.perfil_id) === 1;
 
   return (
     <CartProvider>
       <Router>
-        {/* ✅ HEADER CONECTADO AL ESTADO GLOBAL */}
         <Header user={user} setUser={setUser} />
 
         <Routes>
-          <Route
-            path="/"
-            element={
-              <Home
-                productos={productos}
-                cargando={cargando}
-                user={user}
-                onUpdateProducto={onUpdateProducto}
-              />
-            }
-          />
-
-          <Route
-            path="/hombres"
-            element={
-              <Hombres
-                productos={productos}
-                cargando={cargando}
-                user={user}
-                onUpdateProducto={onUpdateProducto}
-              />
-            }
-          />
-
-          <Route
-            path="/mujeres"
-            element={
-              <Mujeres
-                productos={productos}
-                cargando={cargando}
-                user={user}
-                onUpdateProducto={onUpdateProducto}
-              />
-            }
-          />
-
+          <Route path="/" element={<Home productos={productos} cargando={cargando} user={user} onUpdateProducto={onUpdateProducto} />} />
+          <Route path="/hombres" element={<Hombres productos={productos} cargando={cargando} user={user} onUpdateProducto={onUpdateProducto} />} />
+          <Route path="/mujeres" element={<Mujeres productos={productos} cargando={cargando} user={user} onUpdateProducto={onUpdateProducto} />} />
           <Route path="/promociones" element={<Promociones />} />
-          <Route path="/favoritos" element={<Favoritos />} />
+          <Route path="/favoritos" element={<Favoritos usuario={user} />} />
           <Route path="/perfil" element={<Perfil />} />
 
-          <Route
-            path="/back"
-            element={isAdmin ? <Back /> : <Navigate to="/" />}
-          />
+          <Route path="/back" element={isAdmin ? <Back /> : <Navigate to="/" />} />
         </Routes>
       </Router>
     </CartProvider>

@@ -3,7 +3,6 @@ import "../assets/styles/ProductItem.css";
 import ProductCard from "../Componentes/ProductCard";
 
 export default function Hombres({ productos, cargando, user, onUpdateProducto }) {
-  // 🔥 SOLO FILTRA – NO FETCH
   const productosHombres = productos.filter(
     (p) => Number(p.genero_id) === 1
   );

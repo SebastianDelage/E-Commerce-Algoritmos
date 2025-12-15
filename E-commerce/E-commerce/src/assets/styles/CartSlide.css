@@ -41,3 +41,32 @@
   color: red;
   cursor: pointer;
 }
+.cart-footer {
+  padding: 14px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  background: #fff;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.cart-buy-btn {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-weight: 800;
+  cursor: pointer;
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+  color: white;
+}
+
+.cart-buy-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

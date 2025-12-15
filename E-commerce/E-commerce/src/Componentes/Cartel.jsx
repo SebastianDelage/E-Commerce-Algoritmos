@@ -1,93 +1,121 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from "react";
+
+// Declaraciones: imágenes y estilos
 import img1 from "../../public/Imagenes/Logo/logo.png";
 import img2 from "../../public/Imagenes/Logo/HypeConColor.png";
 import img3 from "../../public/Imagenes/Logo/Banner.png";
-import '../assets/styles/Cartel.css';
+import "../assets/styles/Cartel.css";
 
+// Declaraciones: data del carrusel
 const images = [
-  { src: img1, alt: 'Image 1'  },
-  { src: img2, alt: 'Image 2'},
-  { src: img3, alt: 'Image 3'},
+  { src: img1, alt: "Logo", title: "Hype" },
+  { src: img2, alt: "Hype Con Color", title: "Nueva temporada" },
+  { src: img3, alt: "Banner", title: "Nueva colección" },
 ];
 
 const Cartel = () => {
+  // Estados: índice actual y pausa por hover
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  useEffect(() => {
-    if (!isPaused) {
-      const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-      }, 2000); // Rotate every 4 seconds
-      return () => clearInterval(interval);
-    }
-  }, [isPaused]);
+  // Referencia: id del intervalo (no re-renderiza)
+  const timerRef = useRef(null);
 
+  // Navegación: anterior/siguiente/ir a índice
   const goToPrevious = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
   const goToNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    setCurrentIndex((prev) => (prev + 1) % images.length);
   };
 
-  const goToImage = (index) => {
-    setCurrentIndex(index);
-  };
+  const goToImage = (index) => setCurrentIndex(index);
 
-  const handleKeyDown = (event) => {
-    if (event.key === 'ArrowLeft') {
-      goToPrevious();
-    } else if (event.key === 'ArrowRight') {
-      goToNext();
+  // Autoplay: crea/limpia intervalo según pausa y cambios manuales
+  useEffect(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+
+    if (!isPaused) {
+      timerRef.current = setInterval(goToNext, 4500);
     }
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [isPaused, currentIndex]);
+
+  // Accesibilidad: navegación por teclado
+  const handleKeyDown = (event) => {
+    if (event.key === "ArrowLeft") goToPrevious();
+    if (event.key === "ArrowRight") goToNext();
   };
 
+  // Render: imagen actual
   const currentImage = images[currentIndex];
 
   return (
-    <div
-      className="carousel"
+    <section
+      className="hero-carousel"
       role="region"
       aria-label="Image carousel"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      tabIndex={0}
       onKeyDown={handleKeyDown}
-      tabIndex={0} // Make the carousel focusable for keyboard navigation
+      onMouseEnter={() => setIsPaused(true)}   // pausa
+      onMouseLeave={() => setIsPaused(false)}  // reanuda
     >
+      {/* Controles: anterior */}
       <button
+        type="button"
+        className="hero-arrow left"
         onClick={goToPrevious}
-        className="carousel-arrow left"
         aria-label="Previous image"
       >
-        ←
+        <span aria-hidden>‹</span>
       </button>
-      <div className="carousel-card">
+
+      {/* Render: imagen + overlay + título */}
+      <div className="hero-card">
         <img
+          key={currentIndex} // reinicia animación al cambiar
           src={currentImage.src}
           alt={currentImage.alt}
-          className="carousel-image"
+          className="hero-image"
+          draggable="false"
         />
-        <div className="carousel-title">{currentImage.title}</div>
+
+        <div className="hero-overlay" aria-hidden="true" />
+
+        {currentImage.title && (
+          <div className="hero-caption">
+            <h2>{currentImage.title}</h2>
+          </div>
+        )}
       </div>
+
+      {/* Controles: siguiente */}
       <button
+        type="button"
+        className="hero-arrow right"
         onClick={goToNext}
-        className="carousel-arrow right"
         aria-label="Next image"
       >
-        →
+        <span aria-hidden>›</span>
       </button>
-      <div className="carousel-indicators">
+
+      {/* Indicadores: ir a imagen */}
+      <div className="hero-indicators" aria-label="carousel indicators">
         {images.map((_, index) => (
           <button
             key={index}
-            className={`indicator ${index === currentIndex ? 'active' : ''}`}
+            type="button"
+            className={`hero-dot ${index === currentIndex ? "active" : ""}`}
             onClick={() => goToImage(index)}
             aria-label={`Go to image ${index + 1}`}
           />
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

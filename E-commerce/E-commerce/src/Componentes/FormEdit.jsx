@@ -1,53 +1,40 @@
-// src/Componentes/FormEdit.jsx
 import { useEffect, useState } from "react";
 import "../assets/styles/EditProductoModal.css";
 
-/* ====== ENDPOINTS ====== */
+// Endpoints combos
 const API_MARCAS = "http://localhost:5079/Marca/GetAllMarca";
 const API_GENEROS = "http://localhost:5079/Genero/GetAllGenero";
 const API_CATEGORIAS = "http://localhost:5079/Categoria/GetAllCategoria";
 
-/* ====== CACHE EN MEMORIA ====== */
+// Cache en memoria
 let cacheMarcas = null;
 let cacheGeneros = null;
 let cacheCategorias = null;
 
-export default function FormEdit({
-  isOpen,
-  onClose,
-  initialData,
-  onSave,
-  isSaving,
-}) {
-  /* ====== STATE ====== */
+export default function FormEdit({ isOpen, onClose, initialData, onSave, isSaving }) {
+  // Estados del form
   const [formData, setFormData] = useState({
     nombre: "",
     descripcion: "",
     precio: 0,
-
-    // SELECTS SIEMPRE STRING
     marca_id: "",
     genero_id: "",
     categoria_id: "",
   });
 
+  // Estados combos
   const [marcas, setMarcas] = useState([]);
   const [generos, setGeneros] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [loadingCombos, setLoadingCombos] = useState(false);
 
-  /* ====== HELPERS ====== */
+  // Helper parse JSON seguro
   const safeJson = async (resp) => {
     const text = await resp.text();
-    try {
-      return text ? JSON.parse(text) : {};
-    } catch {
-      console.error("Respuesta no JSON:", text);
-      return {};
-    }
+    try { return text ? JSON.parse(text) : {}; } catch { return {}; }
   };
 
-  /* ====== CARGA DATOS DEL PRODUCTO ====== */
+  // Cargar datos del producto al abrir
   useEffect(() => {
     if (!initialData || !isOpen) return;
 
@@ -55,15 +42,13 @@ export default function FormEdit({
       nombre: initialData.nombre ?? "",
       descripcion: initialData.descripcion ?? "",
       precio: Number(initialData.precio ?? 0),
-
-      // normalización
       marca_id: String(initialData.marca_id ?? ""),
       genero_id: String(initialData.genero_id ?? ""),
       categoria_id: String(initialData.categoria_id ?? ""),
     });
   }, [initialData, isOpen]);
 
-  /* ====== CARGA COMBOS (CON CACHE) ====== */
+  // Cargar combos (con cache)
   useEffect(() => {
     if (!isOpen) return;
 
@@ -78,29 +63,25 @@ export default function FormEdit({
           return;
         }
 
-        const [respMarcas, respGeneros, respCategorias] = await Promise.all([
+        const [rM, rG, rC] = await Promise.all([
           fetch(API_MARCAS),
           fetch(API_GENEROS),
           fetch(API_CATEGORIAS),
         ]);
 
-        const jsonMarcas = await safeJson(respMarcas);
-        const jsonGeneros = await safeJson(respGeneros);
-        const jsonCategorias = await safeJson(respCategorias);
+        const jM = await safeJson(rM);
+        const jG = await safeJson(rG);
+        const jC = await safeJson(rC);
 
-        if (!respMarcas.ok || !respGeneros.ok || !respCategorias.ok) {
-          throw new Error("Error cargando combos");
-        }
-
-        cacheMarcas = Array.isArray(jsonMarcas?.data) ? jsonMarcas.data : [];
-        cacheGeneros = Array.isArray(jsonGeneros?.data) ? jsonGeneros.data : [];
-        cacheCategorias = Array.isArray(jsonCategorias?.data) ? jsonCategorias.data : [];
+        cacheMarcas = Array.isArray(jM?.data) ? jM.data : [];
+        cacheGeneros = Array.isArray(jG?.data) ? jG.data : [];
+        cacheCategorias = Array.isArray(jC?.data) ? jC.data : [];
 
         setMarcas(cacheMarcas);
         setGeneros(cacheGeneros);
         setCategorias(cacheCategorias);
-      } catch (err) {
-        console.error("Error cargando combos:", err);
+      } catch (e) {
+        console.error(e);
         setMarcas([]);
         setGeneros([]);
         setCategorias([]);
@@ -114,20 +95,19 @@ export default function FormEdit({
 
   if (!isOpen) return null;
 
-  /* ====== HANDLERS ====== */
+  // Cambios inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [name]: name === "precio" ? Number(value) : value,
     }));
   };
 
+  // Submit + validación + onSave
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // CONVERSIÓN FINAL A NUMBER (CLAVE)
     const payload = {
       ...formData,
       marca_id: Number(formData.marca_id),
@@ -135,138 +115,71 @@ export default function FormEdit({
       categoria_id: Number(formData.categoria_id),
     };
 
-    if (!payload.marca_id) {
-      alert("Seleccioná una marca válida");
-      return;
-    }
-    if (!payload.genero_id) {
-      alert("Seleccioná un género válido");
-      return;
-    }
-    if (!payload.categoria_id) {
-      alert("Seleccioná una categoría válida");
-      return;
-    }
+    if (!payload.marca_id) return alert("Seleccioná una marca válida");
+    if (!payload.genero_id) return alert("Seleccioná un género válido");
+    if (!payload.categoria_id) return alert("Seleccioná una categoría válida");
 
     onSave(payload);
   };
 
-  /* ====== RENDER ====== */
   return (
     <div className="modal-backdrop">
       <div className="modal-container">
         <h2 className="modal-title">Editar Producto</h2>
 
         <form onSubmit={handleSubmit}>
+          {/* Inputs */}
           <div className="form-group">
             <label>Nombre</label>
-            <input
-              type="text"
-              name="nombre"
-              value={formData.nombre}
-              onChange={handleChange}
-              required
-              disabled={isSaving}
-            />
+            <input name="nombre" value={formData.nombre} onChange={handleChange} disabled={isSaving} />
           </div>
 
           <div className="form-group">
             <label>Descripción</label>
-            <textarea
-              name="descripcion"
-              value={formData.descripcion}
-              onChange={handleChange}
-              disabled={isSaving}
-            />
+            <textarea name="descripcion" value={formData.descripcion} onChange={handleChange} disabled={isSaving} />
           </div>
 
           <div className="form-group">
             <label>Precio</label>
-            <input
-              type="number"
-              name="precio"
-              value={formData.precio}
-              onChange={handleChange}
-              min="0"
-              step="0.01"
-              required
-              disabled={isSaving}
-            />
+            <input type="number" name="precio" value={formData.precio} onChange={handleChange} disabled={isSaving} />
           </div>
 
-          {/* ====== CATEGORÍA (CLAVE) ====== */}
+          {/* Selects */}
           <div className="form-group">
             <label>Categoría</label>
-            <select
-              name="categoria_id"
-              value={formData.categoria_id}
-              onChange={handleChange}
-              disabled={isSaving || loadingCombos}
-            >
-              <option value="">
-                {loadingCombos ? "Cargando categorías..." : "Seleccioná una categoría"}
-              </option>
-
+            <select name="categoria_id" value={formData.categoria_id} onChange={handleChange} disabled={isSaving || loadingCombos}>
+              <option value="">{loadingCombos ? "Cargando..." : "Seleccioná"}</option>
               {categorias.map((c) => (
-                <option key={c.categoria_id} value={String(c.categoria_id)}>
-                  {c.nombre}
-                </option>
+                <option key={c.categoria_id} value={String(c.categoria_id)}>{c.nombre}</option>
               ))}
             </select>
           </div>
 
-          {/* ====== MARCA ====== */}
           <div className="form-group">
             <label>Marca</label>
-            <select
-              name="marca_id"
-              value={formData.marca_id}
-              onChange={handleChange}
-              disabled={isSaving || loadingCombos}
-            >
-              <option value="">
-                {loadingCombos ? "Cargando marcas..." : "Seleccioná una marca"}
-              </option>
-
+            <select name="marca_id" value={formData.marca_id} onChange={handleChange} disabled={isSaving || loadingCombos}>
+              <option value="">{loadingCombos ? "Cargando..." : "Seleccioná"}</option>
               {marcas.map((m) => (
-                <option key={m.marca_id} value={String(m.marca_id)}>
-                  {m.nombre}
-                </option>
+                <option key={m.marca_id} value={String(m.marca_id)}>{m.nombre}</option>
               ))}
             </select>
           </div>
 
-          {/* ====== GÉNERO ====== */}
           <div className="form-group">
             <label>Género</label>
-            <select
-              name="genero_id"
-              value={formData.genero_id}
-              onChange={handleChange}
-              disabled={isSaving || loadingCombos}
-            >
-              <option value="">
-                {loadingCombos ? "Cargando géneros..." : "Seleccioná un género"}
-              </option>
-
+            <select name="genero_id" value={formData.genero_id} onChange={handleChange} disabled={isSaving || loadingCombos}>
+              <option value="">{loadingCombos ? "Cargando..." : "Seleccioná"}</option>
               {generos.map((g) => (
-                <option key={g.genero_id} value={String(g.genero_id)}>
-                  {g.nombre}
-                </option>
+                <option key={g.genero_id} value={String(g.genero_id)}>{g.nombre}</option>
               ))}
             </select>
           </div>
 
+          {/* Acciones */}
           <div className="modal-actions">
-            <button
-              type="button"
-              className="btn-cancel"
-              onClick={onClose}
-              disabled={isSaving}
-            >
+            <button type="button" className="btn-cancel" onClick={onClose} disabled={isSaving}>
               Cancelar
             </button>
-
             <button type="submit" className="btn-save" disabled={isSaving}>
               {isSaving ? "Guardando..." : "Guardar cambios"}
             </button>

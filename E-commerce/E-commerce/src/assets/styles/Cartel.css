@@ -1,108 +1,161 @@
-.carousel {
-    position: relative;
-    max-width: 100%; /* Adjust as needed */
-    margin: 0 auto;
-    padding: 20px;
-    overflow: hidden;
-  }
-  
-  .carousel-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    transition: transform 0.3s ease-in-out;
-  }
-  
+/* Contenedor general */
+.hero-carousel {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 18px auto;
+  padding: 0 12px;
+  outline: none;
+}
 
-  .carousel-image {
-    width: 100%;
-    height: 400px; /* Adjust height as needed */
-    object-fit: cover; /* Ensures images scale nicely */
-    transition: opacity 0.5s ease-in-out;
-  }
+/* Tarjeta */
+.hero-card {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.18);
+  background: #0b0b0b;
+}
 
-  
-  .carousel-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(82, 81, 81, 0.5);
-    color: rgb(0, 0, 0);
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    z-index: 1; /* Ensure arrows are above carousel content */
+/* Imagen: ocupa todo + animación suave */
+.hero-image {
+  width: 100%;
+  height: clamp(220px, 32vw, 420px);
+  object-fit: cover;
+  display: block;
+  transform: scale(1.02);
+  animation: heroFade 450ms ease-out;
+  user-select: none;
+}
+
+@keyframes heroFade {
+  from {
+    opacity: 0.55;
+    transform: scale(1.06);
+    filter: blur(1px);
   }
-  
-  .carousel-arrow.left {
-    left: 20px; /* Adjust based on padding */
+  to {
+    opacity: 1;
+    transform: scale(1.02);
+    filter: blur(0);
   }
-  
-  .carousel-arrow.right {
-    right: 20px; /* Adjust based on padding */
+}
+
+/* Overlay para que el texto se lea lindo (no tapa mucho) */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.40) 0%,
+    rgba(0, 0, 0, 0.10) 45%,
+    rgba(0, 0, 0, 0.00) 70%
+  );
+  pointer-events: none;
+}
+
+/* Caption */
+.hero-caption {
+  position: absolute;
+  left: 22px;
+  bottom: 18px;
+  color: #fff;
+  z-index: 2;
+  text-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+
+.hero-caption h2 {
+  margin: 0;
+  font-size: clamp(18px, 2.2vw, 34px);
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+/* Flechas modernas */
+.hero-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  z-index: 3;
+
+  /* look glass */
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  transition: transform 160ms ease, background 160ms ease, opacity 160ms ease;
+  opacity: 0.9;
+}
+
+.hero-arrow span {
+  font-size: 34px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.hero-arrow:hover {
+  transform: translateY(-50%) scale(1.06);
+  background: rgba(255, 255, 255, 0.26);
+  opacity: 1;
+}
+
+.hero-arrow:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+.hero-arrow.left {
+  left: 18px;
+}
+
+.hero-arrow.right {
+  right: 18px;
+}
+
+/* Indicadores */
+.hero-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.hero-dot {
+  width: 10px;
+  height: 10px;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.35);
+  transition: width 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.hero-dot:hover {
+  transform: scale(1.15);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.hero-dot.active {
+  width: 28px;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-arrow {
+    width: 38px;
+    height: 38px;
   }
-  
-  .carousel-indicators {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
+  .hero-arrow span {
+    font-size: 30px;
   }
-  
-  .indicator {
-    width: 12px;
-    height: 12px;
-    margin: 0 5px;
-    background: #ccc;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background 0.3s ease;
+  .hero-caption {
+    left: 16px;
+    bottom: 14px;
   }
-  
-  .indicator.active {
-    background: #007bff; /* Primary color, adjust as needed */
-  }
-  
-  .indicator:hover {
-    background: #0056b3;
-  }
-  
-  /* Responsive design */
-  @media (max-width: 768px) {
-    .carousel {
-      padding: 10px;
-    }
-  
-    .carousel-image {
-      height: 300px; /* Smaller height for smaller screens */
-    }
-  
-    .carousel-title {
-      font-size: 1.2rem;
-      padding: 10px;
-    }
-  
-    .carousel-arrow {
-      width: 30px;
-      height: 30px;
-      font-size: 1.2rem;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .carousel-image {
-      height: 200px;
-    }
-  
-    .carousel-title {
-      font-size: 1rem;
-    }
-  }
+}

@@ -1,84 +1,85 @@
-// src/Componentes/ProductCard.jsx
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
 import FormEdit from "./FormEdit";
+import { isFavorito, toggleFavorito } from "../context/Favoritos";
+import "../assets/styles/ProductCard.css";
+import { CartContext } from "../context/CartContext";
 
-export default function ProductCard({ producto, usuario, onUpdateProducto }) {
-  // ✅ Admin solo si existe usuario y perfil_id === 2
+export default function ProductCard({ producto, usuario, onUpdateProducto, extraActions }) {
+  // Rol
   const esAdmin = Number(usuario?.perfil_id) === 1;
 
+  // Estados
   const [productoActual, setProductoActual] = useState(producto);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [fav, setFav] = useState(false);
 
-  useEffect(() => {
-    setProductoActual(producto);
-  }, [producto]);
+  // Context carrito
+  const { addToCart } = useContext(CartContext);
 
-  const handleOpenModal = () => setIsModalOpen(true);
+  // Sync producto
+  useEffect(() => setProductoActual(producto), [producto]);
 
-  const handleCloseModal = () => {
-    if (!isSaving) setIsModalOpen(false);
+  // Sync favorito
+  useEffect(() => setFav(isFavorito(productoActual)), [productoActual]);
+
+  // Favoritos
+  const handleToggleFavorito = () => {
+    const { isNowFav } = toggleFavorito(productoActual);
+    setFav(isNowFav);
   };
 
+  // Agregar al carrito
+  const handleAddToCart = () => {
+    addToCart({
+      id: productoActual.producto_id ?? productoActual.id_producto ?? productoActual.id,
+      name: productoActual.nombre,
+      image: productoActual.imagenUrl || "/Imagenes/default.png",
+      size: "Único",
+      color: "Default",
+      price: Number(productoActual.precio ?? 0),
+      quantity: 1,
+    });
+  };
+
+  // API: update producto
   const handleSave = async (formData) => {
     try {
       setIsSaving(true);
 
-      const id =
-        productoActual.producto_id ??
-        productoActual.id_producto ??
-        productoActual.id;
+      const id = productoActual.producto_id ?? productoActual.id_producto ?? productoActual.id;
+      const url = `http://localhost:5079/Producto/UpdateProducto?id_producto=${id}`;
 
-      const response = await fetch(
-        `http://localhost:5079/Producto/UpdateProducto?producto_id=${id}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(url, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-      console.log("STATUS UPDATE:", response.status);
+      const raw = await response.text();
+      let json = {};
+      try { json = raw ? JSON.parse(raw) : {}; } catch {}
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Respuesta de error del back:", errorText);
-        alert("Error al actualizar el producto (ver consola)");
-        return;
-      }
+      if (!response.ok || json?.success === false) return alert("No se pudo actualizar");
 
-      let updated = formData;
-      try {
-        const json = await response.json();
-        console.log("Respuesta JSON del back:", json);
-        if (json?.data) updated = json.data;
-      } catch {}
+      const updated = json?.data ?? formData;
 
       const updatedProduct = {
         ...productoActual,
         ...updated,
-
-        // 🔒 conserva imagen si no vino en la respuesta/payload
-        imagenUrl: updated?.imagenUrl ?? productoActual.imagenUrl,
-
         producto_id: id,
-        genero_id: Number(updated?.genero_id ?? productoActual.genero_id),
-        marca_id: Number(updated?.marca_id ?? productoActual.marca_id),
-        categoria_id: Number(updated?.categoria_id ?? productoActual.categoria_id),
         precio: Number(updated?.precio ?? productoActual.precio),
+        marca_id: Number(updated?.marca_id ?? productoActual.marca_id),
+        genero_id: Number(updated?.genero_id ?? productoActual.genero_id),
+        categoria_id: Number(updated?.categoria_id ?? productoActual.categoria_id),
       };
 
       setProductoActual(updatedProduct);
-
-      if (typeof onUpdateProducto === "function") {
-        onUpdateProducto(updatedProduct);
-      }
-
+      onUpdateProducto?.(updatedProduct);
       setIsModalOpen(false);
-    } catch (err) {
-      console.error("Error en fetch UpdateProducto:", err);
-      alert("Ocurrió un error al actualizar el producto (ver consola)");
+    } catch (e) {
+      console.error(e);
+      alert("Error al actualizar");
     } finally {
       setIsSaving(false);
     }
@@ -86,41 +87,47 @@ export default function ProductCard({ producto, usuario, onUpdateProducto }) {
 
   return (
     <>
-      <div className="card h-100 m-2">
-        <img
-          src={productoActual.imagenUrl || "/Imagenes/default.png"}
-          className="card-img-top"
-          alt={productoActual.nombre}
-        />
+      <div className="pc-card">
+        <div className="pc-imgWrap">
+          <img
+            src={productoActual.imagenUrl || "/Imagenes/default.png"}
+            alt={productoActual.nombre}
+            className="pc-img"
+          />
 
-        <div className="card-body">
-          <h5 className="card-title">{productoActual.nombre}</h5>
-          <p className="card-text">${productoActual.precio}</p>
-
-          {esAdmin ? (
-            <button
-              type="button"
-              className="btn btn-warning"
-              onClick={handleOpenModal}
-            >
-              Administrar
+          {!esAdmin && (
+            <button className={`pc-favBtn ${fav ? "isFav" : ""}`} onClick={handleToggleFavorito}>
+              {fav ? "❤️" : "🤍"}
             </button>
-          ) : (
-            <Link
-              to={`/producto/${productoActual.producto_id}`}
-              className="btn btn-primary"
-            >
-              Ver más
-            </Link>
           )}
+        </div>
+
+        <div className="pc-body">
+          <h5 className="pc-title">{productoActual.nombre}</h5>
+
+          <div className="pc-bottom">
+            <span className="pc-price">${productoActual.precio}</span>
+
+            {esAdmin ? (
+              <button className="pc-btn pc-btnAdmin" onClick={() => setIsModalOpen(true)}>
+                Administrar
+              </button>
+            ) : (
+              <button className="pc-btn pc-btnBuy" onClick={handleAddToCart}>
+                Comprar
+              </button>
+            )}
+          </div>
+
+          {/* Acciones extra (ej: quitar de favoritos) */}
+          {extraActions && <div className="pc-extra">{extraActions}</div>}
         </div>
       </div>
 
-      {/* ✅ Solo renderizamos el modal si es admin */}
       {esAdmin && (
         <FormEdit
           isOpen={isModalOpen}
-          onClose={handleCloseModal}
+          onClose={() => !isSaving && setIsModalOpen(false)}
           initialData={productoActual}
           onSave={handleSave}
           isSaving={isSaving}
@@ -129,4 +136,3 @@ export default function ProductCard({ producto, usuario, onUpdateProducto }) {
     </>
   );
 }
-

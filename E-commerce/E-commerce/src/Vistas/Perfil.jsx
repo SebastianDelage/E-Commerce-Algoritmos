@@ -6,9 +6,9 @@ const Perfil = () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const handleLogout = () => {
-    localStorage.removeItem("user"); // Borra la sesión
-    navigate("/"); // Redirige al home
-    window.location.reload(); // Recarga para que el Header detecte el cambio
+    localStorage.removeItem("user");
+    navigate("/"); 
+    window.location.reload(); 
   };
 
   return (
