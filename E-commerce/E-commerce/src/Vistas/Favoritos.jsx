@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../Componentes/ProductCard";
 import { getFavoritos, removeFavoritoById, getProductoId } from "../context/Favoritos";
+import "../assets/styles/Favoritos.css";
 
 const Favoritos = ({ usuario }) => {
   // Estado lista

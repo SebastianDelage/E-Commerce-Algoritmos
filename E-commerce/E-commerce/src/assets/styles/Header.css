@@ -1,6 +1,88 @@
+/* ==========================================================================
+   Offcanvas HYPE - Fondo BLANCO con letras NARANJA
+   ========================================================================== */
+
+.hype-offcanvas-white {
+  background-color: #ffffff !important;          /* Fondo blanco puro */
+  border-right: 2px solid #ff6200 !important;    /* Borde naranja sutil */
+  box-shadow: -12px 0 30px rgba(0, 0, 0, 0.15) !important; /* Sombra suave */
+}
+
+/* Header (título + cerrar) */
+.hype-offcanvas-white .offcanvas-header {
+  border-bottom: 2px solid #ff6200 !important;   /* Línea naranja fuerte */
+  padding: 1.4rem 1.5rem !important;
+  background: linear-gradient(to right, #fff, #fffaf0); /* Toque muy sutil */
+}
+
+.hype-offcanvas-white .offcanvas-title {
+  font-family: 'Impact', 'Arial Black', sans-serif; /* o tu fuente bold */
+  font-size: 2.4rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 3px !important;
+  color: #ff6200 !important;                    /* Naranja principal */
+  text-transform: uppercase;
+  text-shadow: 1px 1px 0 #00000022;             /* Sombra ligera */
+}
+
+/* Botón cerrar (X) - naranja y rotación al hover */
+.hype-offcanvas-white .btn-close {
+  filter: invert(0) sepia(1) saturate(8) hue-rotate(320deg) brightness(1.1) !important; /* X naranja */
+  opacity: 1 !important;
+  transition: all 0.25s ease;
+}
+
+.hype-offcanvas-white .btn-close:hover {
+  transform: rotate(90deg) scale(1.2);
+}
+
+/* Links del menú */
+.hype-offcanvas-white .nav-link {
+  color: #ff6200 !important;                    /* Naranja base */
+  font-size: 1.4rem !important;
+  font-weight: 700 !important;
+  padding: 1.1rem 1.5rem !important;
+  transition: all 0.25s ease;
+  border-bottom: 1px solid #ffe0b2 !important;  /* Naranja muy claro para divider */
+  letter-spacing: 0.8px;
+}
+
+.hype-offcanvas-white .nav-link:hover,
+.hype-offcanvas-white .nav-link:focus {
+  color: #d94f00 !important;                    /* Naranja más oscuro al hover */
+  background-color: #fff5e6 !important;         /* Fondo naranja muy claro */
+  padding-left: 2rem !important;                /* Desplazamiento al hover */
+  text-shadow: 0 0 6px rgba(255, 98, 0, 0.3);
+}
+
+/* Separador */
+.hype-offcanvas-white hr {
+  border-color: #ff6200 !important;
+  opacity: 0.4 !important;
+  margin: 2.2rem 0 !important;
+}
+
+/* Links de usuario (Mi Perfil, Favoritos, Iniciar Sesión) */
+.hype-offcanvas-white .nav-link.text-white {
+  color: #ff6200 !important;                    /* También naranja */
+  font-weight: 600 !important;
+}
+
+.hype-offcanvas-white .nav-link.text-white:hover {
+  color: #d94f00 !important;
+}
+
+/* Ancho del menú (ajustable) */
+.hype-offcanvas-white.offcanvas-start {
+  width: 340px !important;                      /* Un poco más ancho para comodidad */
+}
+
+
+
+
 /* Estilo general del logo */
 .logo {
-    max-height: 60px;
+    max-height: 80px;
 }
 
 /* Íconos del header (carrito, favoritos, usuario) */
@@ -9,7 +91,7 @@
     transition: color 0.3s ease;
 }
 .menu {
-    border-top: 1px solid #000; /* Línea divisoria de 2px, color negro */
+    border-top: 2px solid #000; /* Línea divisoria de 2px, color negro */
     padding-top: 10px; /* Espacio opcional después de la línea */
 }
 
@@ -87,4 +169,34 @@
     border-bottom: 1px solid #ff9153; 
     box-shadow: none; 
   }
+
+  .menu-icon:hover {
+  color: #ff6b6b; /* o el color principal de tu marca */
+  transform: scale(1.1);
+  transition: all 0.2s ease;
+}
+
+.search-input {
+  transition: all 0.3s ease;
+}
+
+.search-input.expand {
+  width: 250px !important; /* o el ancho que prefieras */
+}
+
+.menu-links a {
+  color: #000;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.menu-links a:hover {
+  color: #ff6b6b; /* color accent */
+}
   
+/*responsive*/
+@media (max-width: 576px) {
+  .offcanvas-start {
+    width: 85vw !important;
+  }
+}

@@ -1,17 +1,33 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 
 // Imágenes y estilos
-import img1 from "../../public/Imagenes/Logo/logo.png";
-import img2 from "../../public/Imagenes/Logo/HypeConColor.png";
-import img3 from "../../public/Imagenes/Logo/Banner.png";
+import img1 from "../../public/Imagenes/Logo/Sale.gif";
+import img2 from "../../public/Imagenes/Logo/Mujeres.jpg";
+import img3 from "../../public/Imagenes/Logo/ColeccionHombre.jpg";
 import "../assets/styles/Cartel.css";
 
-// Data del carrusel (podés agregar "link" por slide si querés rutas distintas después)
+// Data del carrusel con links por slide
 const images = [
-  { src: img1, alt: "Logo", title: "Hype" },
-  { src: img2, alt: "Hype Con Color", title: "Nueva temporada" },
-  { src: img3, alt: "Banner", title: "Nueva colección" },
+  { 
+    src: img1, 
+    alt: "Sale", 
+    title: "Promociones", 
+    link: "/Promociones" 
+    
+  },
+  { 
+    src: img2, 
+    alt: "Mujeres", 
+    title: "Coleccion de mujeres", 
+    link: "/Mujeres" 
+  },
+  { 
+    src: img3, 
+    alt: "Hombres", 
+    title: "Coleccion de hombres", 
+    link: "/Hombres" 
+  },
 ];
 
 const Cartel = () => {
@@ -59,7 +75,7 @@ const Cartel = () => {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Flecha izquierda - FUERA del Link */}
+      {/* Flecha izquierda */}
       <button
         type="button"
         className="hero-arrow left"
@@ -69,14 +85,15 @@ const Cartel = () => {
         <span aria-hidden>‹</span>
       </button>
 
-      {/* Parte clickable: solo el card */}
+      {/* Parte clickable con link dinámico */}
       <Link
-        to="/promociones"                    // ← cambiá a la ruta que quieras
+        to={currentImage.link}
         style={{ 
           display: 'block', 
           height: '100%', 
           textDecoration: 'none', 
-          color: 'inherit' 
+          color: 'inherit',
+          cursor: 'pointer'
         }}
       >
         <div className="hero-card">
@@ -98,7 +115,7 @@ const Cartel = () => {
         </div>
       </Link>
 
-      {/* Flecha derecha - FUERA del Link */}
+      {/* Flecha derecha */}
       <button
         type="button"
         className="hero-arrow right"
@@ -108,7 +125,7 @@ const Cartel = () => {
         <span aria-hidden>›</span>
       </button>
 
-      {/* Indicadores (dots) - FUERA del Link */}
+      {/* Indicadores (dots) */}
       <div className="hero-indicators" aria-label="carousel indicators">
         {images.map((_, index) => (
           <button
