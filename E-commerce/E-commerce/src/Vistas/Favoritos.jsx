@@ -7,22 +7,34 @@ const Favoritos = ({ usuario }) => {
   // Estado lista
   const [favoritos, setFavoritos] = useState([]);
 
-  // Carga desde storage
-  const cargar = () => setFavoritos(getFavoritos());
-
-  // Listener storage
-  useEffect(() => {
-    cargar();
-    const onStorage = (e) => e.key === "favoritos" && cargar();
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
-  }, []);
-
-  // Quitar favorito
+  // ← SOLO UNA definición de handleRemove
   const handleRemove = (id) => {
     const newFavs = removeFavoritoById(id);
     setFavoritos(newFavs);
+    showNotification("Eliminado de favoritos", "remove");
   };
+
+  // Carga desde storage
+  const cargar = () => setFavoritos(getFavoritos());
+
+  // Listener para cambios (storage + custom event)
+  useEffect(() => {
+    cargar(); // carga inicial
+
+    const handleStorage = (e) => {
+      if (e.key === "favoritos") {
+        cargar();
+      }
+    };
+
+    window.addEventListener("storage", handleStorage);
+    window.addEventListener("favoritesChanged", cargar);
+
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+      window.removeEventListener("favoritesChanged", cargar);
+    };
+  }, []); // ← dependencias vacías → se ejecuta solo al montar/desmontar
 
   return (
     <div className="container mt-4">
@@ -41,7 +53,10 @@ const Favoritos = ({ usuario }) => {
                   producto={p}
                   usuario={usuario ?? { perfil_id: 0 }}
                   extraActions={
-                    <button className="pc-btnDanger" onClick={() => handleRemove(id)}>
+                    <button
+                      className="pc-btnDanger"
+                      onClick={() => handleRemove(id)}
+                    >
                       Quitar de favoritos
                     </button>
                   }

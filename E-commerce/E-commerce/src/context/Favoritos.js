@@ -33,6 +33,7 @@ export const toggleFavorito = (producto) => {
     : [...favs, producto];
 
   setFavoritos(newFavs);
+  window.dispatchEvent(new Event("favoritesChanged"));
   return { newFavs, isNowFav: !exists };
 };
 
@@ -40,5 +41,6 @@ export const removeFavoritoById = (id) => {
   const favs = getFavoritos();
   const newFavs = favs.filter((x) => getProductoId(x) !== id);
   setFavoritos(newFavs);
+  window.dispatchEvent(new Event("favoritesChanged"));
   return newFavs;
 };

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Offcanvas, Nav } from 'react-bootstrap';
 
@@ -6,7 +6,13 @@ import { Offcanvas, Nav } from 'react-bootstrap';
 import logo from "../../public/Imagenes/Logo/logo.png";
 import "../assets/styles/Header.css";
 
-// Componentes que abre el header
+// Context del carrito
+import { CartContext } from "../context/CartContext";
+
+// Función para obtener favoritos (de tu contexto)
+import { getFavoritos } from "../context/Favoritos";
+
+// Componentes
 import CartSlide from "../Componentes/CartSlide";
 import LoginModal from "../Componentes/LoginModal";
 
@@ -17,30 +23,66 @@ const Header = ({ user, setUser }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
+  // Carrito
+  const { carrito } = useContext(CartContext);
+  const cartItemCount = carrito.reduce(
+    (total, item) => total + (Number(item.quantity) || 1),
+    0
+  );
+
+  // Favoritos
+  const [favoritesCount, setFavoritesCount] = useState(0);
+
+  const updateFavoritesCount = () => {
+    const favs = getFavoritos() || [];
+    setFavoritesCount(favs.length);
+  };
+
+  useEffect(() => {
+    updateFavoritesCount();
+
+    // Escuchar cambios en localStorage (cambio desde otra pestaña)
+    const handleStorage = (e) => {
+      if (e.key === "favoritos") {
+        updateFavoritesCount();
+      }
+    };
+
+    window.addEventListener("storage", handleStorage);
+
+    // Opcional: escuchar evento custom (mejor reactividad)
+    window.addEventListener("favoritesChanged", updateFavoritesCount);
+
+    // Carga inicial + cada vez que se monta
+    const interval = setInterval(updateFavoritesCount, 2000); // por si acaso
+
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+      window.removeEventListener("favoritesChanged", updateFavoritesCount);
+      clearInterval(interval);
+    };
+  }, []);
+
   // Navegación
   const navigate = useNavigate();
 
-  // Rol
   const isAdmin = Number(user?.perfil_id) === 1;
 
-  // Acciones UI
+  // Handlers
   const handleCartClick = () => setShowCart(true);
   const handleCloseCart = () => setShowCart(false);
 
-  // Validación acceso perfil
   const handleProfileClick = () => {
     if (user) navigate("/perfil");
     else setShowLoginModal(true);
   };
 
-  // Login exitoso: guardar sesión en memoria (App)
   const handleLoginSuccess = (loggedUser) => {
     setUser(loggedUser);
     setShowLoginModal(false);
     navigate("/");
   };
 
-  // Búsqueda UI
   const handleSearchClick = () => setShowSearch(!showSearch);
   const handleMenuClick = () => setShowMenu(true);
   const handleCloseMenu = () => setShowMenu(false);
@@ -48,18 +90,16 @@ const Header = ({ user, setUser }) => {
   return (
     <div className="container py-2">
       <div className="row align-items-center">
-        {/* Menu +Buscador */}
+        {/* Izquierda: menú + buscador */}
         <div className="col-4 d-flex align-items-center gap-3">
-          {/* Menú hamburguesa - solo ícono */}
-          <i 
-            className="bi bi-list fs-3 cursor-pointer menu-icon" 
+          <i
+            className="bi bi-list fs-3 cursor-pointer menu-icon"
             onClick={handleMenuClick}
-            style={{ fontSize: '1.8rem' }} // un toque más grande y visible
+            style={{ fontSize: '1.8rem' }}
           />
 
-          {/* Buscador */}
           <div className="position-relative flex-grow-1">
-            <i 
+            <i
               className="bi bi-search fs-4 buscar cursor-pointer position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"
               onClick={handleSearchClick}
             />
@@ -71,28 +111,39 @@ const Header = ({ user, setUser }) => {
           </div>
         </div>
 
-        {/* Logo */}
+        {/* Centro: logo */}
         <div className="col-4 text-center">
           <Link to="/">
             <img src={logo} alt="Logo E-Commerce" className="img-fluid logo" />
           </Link>
         </div>
 
-        {/* Iconos */}
-        <div className="col-4 d-flex justify-content-end gap-3">
+        {/* Derecha: iconos */}
+        <div className="col-4 d-flex justify-content-end gap-3 position-relative">
           {isAdmin && (
             <button className="btn btn-link p-0" onClick={() => navigate("/back")}>
               <i className="admin bi bi-tools fs-4" title="Panel Admin" />
             </button>
           )}
+{/* Carrito */}
+<div className="position-relative d-inline-block">
+  <button className="btn btn-link p-0" onClick={handleCartClick}>
+    <i className="carrito bi bi-cart fs-4" />
+    {cartItemCount > 0 && (
+      <span className="badge cart-badge">{cartItemCount}</span>
+    )}
+  </button>
+</div>
 
-          <button className="btn btn-link p-0" onClick={handleCartClick}>
-            <i className="carrito bi bi-cart fs-4" />
-          </button>
-
-          <Link to="/favoritos">
-            <i className="favorito bi bi-heart fs-4" />
-          </Link>
+{/* Favoritos */}
+<div className="position-relative d-inline-block">
+  <Link to="/favoritos">
+    <i className="favorito bi bi-heart fs-4" />
+    {favoritesCount > 0 && (
+      <span className="badge fav-badge">{favoritesCount}</span>
+    )}
+  </Link>
+</div>
 
           <button className="btn btn-link p-0" onClick={handleProfileClick}>
             <i className="perfil bi bi-person-circle fs-4" />
@@ -100,7 +151,7 @@ const Header = ({ user, setUser }) => {
         </div>
       </div>
 
-      {/* Menú */}
+      {/* Links de categorías */}
       <div className="row mt-2">
         <div className="col d-flex justify-content-around menu">
           <Link to="/hombres">Hombres</Link>
@@ -109,12 +160,12 @@ const Header = ({ user, setUser }) => {
         </div>
       </div>
 
-      {/* Offcanvas Menú (solo se abre con el ícono hamburguesa) */}
-      <Offcanvas 
-        show={showMenu} 
-        onHide={handleCloseMenu} 
+      {/* Offcanvas menú móvil */}
+      <Offcanvas
+        show={showMenu}
+        onHide={handleCloseMenu}
         placement="start"
-        className="hype-offcanvas-white" 
+        className="hype-offcanvas-white"
       >
         <Offcanvas.Header closeButton closeButtonClassName="btn-close-white">
           <Offcanvas.Title className="fs-3 fw-bold">HYPE</Offcanvas.Title>
@@ -140,12 +191,12 @@ const Header = ({ user, setUser }) => {
                   Mi Perfil
                 </Nav.Link>
                 <Nav.Link as={Link} to="/favoritos" onClick={handleCloseMenu} className="text-white">
-                  Favoritos
+                  Favoritos {favoritesCount > 0 && `(${favoritesCount})`}
                 </Nav.Link>
               </>
             ) : (
-              <Nav.Link 
-                onClick={() => { setShowLoginModal(true); handleCloseMenu(); }} 
+              <Nav.Link
+                onClick={() => { setShowLoginModal(true); handleCloseMenu(); }}
                 className="text-white"
               >
                 Iniciar Sesión
@@ -155,10 +206,8 @@ const Header = ({ user, setUser }) => {
         </Offcanvas.Body>
       </Offcanvas>
 
-      {/* Carrito */}
       <CartSlide show={showCart} onClose={handleCloseCart} usuario={user} />
 
-      {/* Login */}
       {showLoginModal && (
         <LoginModal onClose={() => setShowLoginModal(false)} onLoginSuccess={handleLoginSuccess} />
       )}

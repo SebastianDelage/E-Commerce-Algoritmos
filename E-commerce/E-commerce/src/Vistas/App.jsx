@@ -51,22 +51,22 @@ function App() {
   const isAdmin = Number(user?.perfil_id) === 1;
 
   return (
-    <CartProvider>
-      <Router>
-        <Header user={user} setUser={setUser} />
+      <CartProvider>
+        <Router>
+          <Header user={user} setUser={setUser} />
 
-        <Routes>
-          <Route path="/" element={<Home productos={productos} cargando={cargando} user={user} onUpdateProducto={onUpdateProducto} />} />
-          <Route path="/hombres" element={<Hombres productos={productos} cargando={cargando} user={user} onUpdateProducto={onUpdateProducto} />} />
-          <Route path="/mujeres" element={<Mujeres productos={productos} cargando={cargando} user={user} onUpdateProducto={onUpdateProducto} />} />
-          <Route path="/promociones" element={<Promociones />} />
-          <Route path="/favoritos" element={<Favoritos usuario={user} />} />
-          <Route path="/perfil" element={<Perfil />} />
+          <Routes>
+            <Route path="/" element={<Home productos={productos} cargando={cargando} user={user} onUpdateProducto={onUpdateProducto} />} />
+            <Route path="/hombres" element={<Hombres productos={productos} cargando={cargando} user={user} onUpdateProducto={onUpdateProducto} />} />
+            <Route path="/mujeres" element={<Mujeres productos={productos} cargando={cargando} user={user} onUpdateProducto={onUpdateProducto} />} />
+            <Route path="/promociones" element={<Promociones />} />
+            <Route path="/favoritos" element={<Favoritos usuario={user} />} />
+            <Route path="/perfil" element={<Perfil />} />
 
-          <Route path="/back" element={isAdmin ? <Back /> : <Navigate to="/" />} />
-        </Routes>
-      </Router>
-    </CartProvider>
+            <Route path="/back" element={isAdmin ? <Back /> : <Navigate to="/" />} />
+          </Routes>
+        </Router>
+      </CartProvider>
   );
 }
 
