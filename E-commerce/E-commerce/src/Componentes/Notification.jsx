@@ -9,7 +9,7 @@ const Notification = ({ message, type = 'success', onClose }) => {
     const timer = setTimeout(() => {
       console.log("Notification cerrándose");
       onClose();
-    }, 3000);
+    }, 1000);
 
     return () => {
       console.log("Notification desmontada");
