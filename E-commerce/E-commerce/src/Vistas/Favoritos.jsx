@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "../Componentes/ProductCard";
 import { getFavoritos, removeFavoritoById, getProductoId } from "../context/Favoritos";
 import "../assets/styles/Favoritos.css";
+import toast from 'react-hot-toast';
 
 const Favoritos = ({ usuario }) => {
   // Estado lista
@@ -9,11 +10,10 @@ const Favoritos = ({ usuario }) => {
 
   // ← SOLO UNA definición de handleRemove
   const handleRemove = (id) => {
-    const newFavs = removeFavoritoById(id);
-    setFavoritos(newFavs);
-    showNotification("Eliminado de favoritos", "remove");
-  };
-
+  const newFavs = removeFavoritoById(id);
+  setFavoritos(newFavs);
+  toast.error("Eliminado de favoritos");
+};
   // Carga desde storage
   const cargar = () => setFavoritos(getFavoritos());
 

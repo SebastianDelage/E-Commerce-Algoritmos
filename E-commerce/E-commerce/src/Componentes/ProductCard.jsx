@@ -1,8 +1,11 @@
+// src/Componentes/ProductCard.jsx
 import { useEffect, useState, useContext } from "react";
 import FormEdit from "./FormEdit";
 import { isFavorito, toggleFavorito } from "../context/Favoritos";
 import "../assets/styles/ProductCard.css";
 import { CartContext } from "../context/CartContext";
+import { useNotification } from '../context/NotificationContext';
+
 export default function ProductCard({ producto, usuario, onUpdateProducto, extraActions }) {
   // Rol
   const esAdmin = Number(usuario?.perfil_id) === 1;
@@ -15,7 +18,8 @@ export default function ProductCard({ producto, usuario, onUpdateProducto, extra
 
   // Contexts
   const { addToCart } = useContext(CartContext);
- 
+  const { showNotification } = useNotification();
+
   // Sync producto
   useEffect(() => setProductoActual(producto), [producto]);
 
@@ -26,7 +30,10 @@ export default function ProductCard({ producto, usuario, onUpdateProducto, extra
   const handleToggleFavorito = () => {
     const { isNowFav } = toggleFavorito(productoActual);
     setFav(isNowFav);
-
+    showNotification(
+      isNowFav ? "Agregado a favoritos ❤️" : "Quitado de favoritos",
+      isNowFav ? "success" : "remove"
+    );
   };
 
   // Agregar al carrito
@@ -40,11 +47,10 @@ export default function ProductCard({ producto, usuario, onUpdateProducto, extra
       price: Number(productoActual.precio ?? 0),
       quantity: 1,
     });
-
     showNotification("Producto agregado al carrito 🛒", "success");
   };
 
-  // API: update producto (para admin)
+  // API: update producto
   const handleSave = async (formData) => {
     try {
       setIsSaving(true);
@@ -60,13 +66,9 @@ export default function ProductCard({ producto, usuario, onUpdateProducto, extra
 
       const raw = await response.text();
       let json = {};
-      try {
-        json = raw ? JSON.parse(raw) : {};
-      } catch {}
+      try { json = raw ? JSON.parse(raw) : {}; } catch {}
 
-      if (!response.ok || json?.success === false) {
-        return alert("No se pudo actualizar");
-      }
+      if (!response.ok || json?.success === false) return alert("No se pudo actualizar");
 
       const updated = json?.data ?? formData;
 
@@ -102,10 +104,7 @@ export default function ProductCard({ producto, usuario, onUpdateProducto, extra
           />
 
           {!esAdmin && (
-            <button
-              className={`pc-favBtn ${fav ? "isFav" : ""}`}
-              onClick={handleToggleFavorito}
-            >
+            <button className={`pc-favBtn ${fav ? "isFav" : ""}`} onClick={handleToggleFavorito}>
               {fav ? "❤️" : "🤍"}
             </button>
           )}
@@ -118,10 +117,7 @@ export default function ProductCard({ producto, usuario, onUpdateProducto, extra
             <span className="pc-price">${productoActual.precio}</span>
 
             {esAdmin ? (
-              <button
-                className="pc-btn pc-btnAdmin"
-                onClick={() => setIsModalOpen(true)}
-              >
+              <button className="pc-btn pc-btnAdmin" onClick={() => setIsModalOpen(true)}>
                 Administrar
               </button>
             ) : (
@@ -131,6 +127,7 @@ export default function ProductCard({ producto, usuario, onUpdateProducto, extra
             )}
           </div>
 
+          {/* Acciones extra (ej: quitar de favoritos) */}
           {extraActions && <div className="pc-extra">{extraActions}</div>}
         </div>
       </div>

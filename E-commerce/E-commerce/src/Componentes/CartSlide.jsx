@@ -1,6 +1,7 @@
+// src/Componentes/CartSlide.jsx
 import { useContext, useMemo, useState } from "react";
 import { CartContext } from "../context/CartContext";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaPlus, FaMinus } from "react-icons/fa";
 import "../assets/styles/CartSlide.css";
 
 // Endpoint crear orden
@@ -8,7 +9,7 @@ const API_CREATE_ORDEN = "http://localhost:5079/Orden/CreateOrden";
 
 export default function CartSlide({ show, onClose, usuario }) {
   // Context carrito
-  const { carrito, removeFromCart, clearCart } = useContext(CartContext);
+  const { carrito, removeFromCart, updateQuantity, clearCart } = useContext(CartContext);
 
   // Estado UI
   const [isBuying, setIsBuying] = useState(false);
@@ -92,6 +93,24 @@ export default function CartSlide({ show, onClose, usuario }) {
               <span>{item.size}</span>
               <span>{item.color}</span>
               <span>${Number(item.price ?? 0)} x {Number(item.quantity ?? 1)}</span>
+            </div>
+
+            {/* Controles de cantidad */}
+            <div className="quantity-controls">
+              <button
+                className="qty-btn"
+                onClick={() => updateQuantity(item.id, -1)}
+                disabled={item.quantity <= 1}
+              >
+                <FaMinus size={16} />
+              </button>
+              <span className="qty">{item.quantity ?? 1}</span>
+              <button
+                className="qty-btn"
+                onClick={() => updateQuantity(item.id, 1)}
+              >
+                <FaPlus size={16} />
+              </button>
             </div>
 
             <button className="remove-btn" onClick={() => removeFromCart(item.id)}>
